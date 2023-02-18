@@ -1,2 +1,2 @@
 Compile program using: 
-g++ -o randmst randmst.cpp
+g++  -std=c++17 -o randmst randmst.cc

@@ -3,45 +3,109 @@
 #include <unordered_map>
 #include <vector>
 #include <tuple>
-#include<iostream>
-#include<climits>
-#include <optional>
+#include <iostream>
+#include <climits>
+#include <set>
+#include "minheap.h"
 
 using namespace std;
 
-// swap function for priority queue
-void swap(float *x, float *y);
+unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimension);
+float prim(unordered_map<int, vector<tuple<int, float>>> graph);
+float rand_num();
 
 // ./randmst 0 numpoints numtrials dimension
 int main(int argc,char* argv[]) {
-    printf("Number of arguments: %i\n", argc);
-    printf("Arguments are: %s\n", argv[0]);
+    // printf("Number of arguments: %i\n", argc);
+    // printf("Arguments are: %s\n", argv[0]);
 
-    // establish parameters
-    int flexibility = atoi(argv[1]);
-    int numpoints = atoi(argv[2]);
-    int numtrials = atoi(argv[3]);
-    int dimension = atoi(argv[4]);
+    // // establish parameters
+    // int flexibility = atoi(argv[1]);
+    // // test numpoints = 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 
+    // int numpoints = atoi(argv[2]);
+    // int numtrials = atoi(argv[3]); 
+    // int dimension = atoi(argv[4]);
     
     // construct graph depending on dimension
-    unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
+    // run Prim's Algorithm
+    unordered_map<int, vector<tuple<int, float>>> graph;
+    graph[0] = vector<tuple<int, float>>();
+    graph[0].push_back(make_tuple(1, 0.5));
+    graph[0].push_back(make_tuple(2, 0.5));
+    graph[1] = vector<tuple<int, float>>();
+    graph[1].push_back(make_tuple(0, 0.5));
+    graph[1].push_back(make_tuple(2, 0.5));
+    graph[2] = vector<tuple<int, float>>();
+    graph[2].push_back(make_tuple(0, 0.5));
+    graph[2].push_back(make_tuple(1, 0.5));
 
-    // get minimum spanning tree using Prim's Algorithm
+    float total_weight = prim(graph);
+    cout << "total weight: " << total_weight << endl;
 
-
+    // unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
+    // int avg_weight = 0.0;
+    // for (int i = 0; i < numpoints; i++) {
+    //     unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
+    //     avg_weight += prim(graph);
+    // }
+    // avg_weight /= numtrials;
+    // cout << avg_weight;
 
     return 0;
 }
 
-// implement priority queue
-
-
-
-// use Prim's Algorithm to find minimum spanning tree
+// use Prim's Algorithm to find minimum spanning tree using our minHeap
 // returns the total weight of the MST
-float prim_1d(unordered_map<int, vector<int>> graph) {
-    // TODO: implement Prim's Algorithm
-    
+
+/*
+PrimMST(graph G)
+    for each vertex v in G:
+        v.distance = infinity
+    start = arbitrary vertex
+    start.distance = 0
+    priorityQueue = all vertices in G
+    while priorityQueue is not empty:
+        u = vertex with smallest distance in priorityQueue
+        remove u from priorityQueue
+        for each neighbor v of u:
+            if v is in priorityQueue and weight(u, v) < v.distance:
+                v.distance = weight(u, v)
+                v.parent = u
+    return MST
+*/
+
+float prim(unordered_map<int, vector<tuple<int, float>>> graph) {
+    float total_weight = 0.0;
+    set<int> S;
+    MinHeap H = MinHeap(graph.size() * (graph.size() - 1) / 2);
+    float dist[graph.size()];
+    cout << "graph size: " << graph.size() << endl;
+    // initialize dist to infinity (2.0)
+    for (int i = 0; i < graph.size(); i++) {
+
+        dist[i] = 2.0;
+    }
+    dist[0] = 0.0;
+    // insert starting vertex into H
+    H.insert(make_tuple(0, 0.0));
+    while (H.cur_size != 0) {
+        tuple<int, float> v = H.extract_min();
+        S.insert(get<0>(v));
+        // for each neighbor of v
+        for (tuple<int, float> neighbor : graph[get<0>(v)]) {
+            // if neighbor is not in S, add it to H
+            if (dist[get<0>(neighbor)] > get<1>(neighbor)) {
+                dist[get<0>(neighbor)] = get<1>(neighbor);
+                H.insert(neighbor);
+            }
+        }
+    }
+    // calculate total weight
+    for (int i = 0; i < graph.size(); i++) {
+        total_weight += dist[i];
+        cout << "current weight: " << total_weight << endl;
+    }
+    return total_weight;
 }
 
 // randomizes vertices for dimension 2
@@ -134,104 +198,4 @@ unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimensi
     } 
 
     return graph;     
-}
-
-
-
-// a class for constructing binary heap
-class MinHeap {
-    
-public:
-    float *H; // pointer to array H: elements in heap
-    int max_size; // size of H array
-    int cur_size; // Current number of elements in min heap
-    // constructor
-    MinHeap(int capacity);
-  
-    // to heapify a subtree with the root at given index
-    void heapify(int n);
-  
-    // to get parent_index node index of node at index i
-    int parent_index(int i) { 
-        return (i - 1) / 2; 
-    }
-    // to get index of node at index i's left child, or right child
-    int right_index(int i) { 
-        return (2 * i + 2); 
-    }
-    int left_index(int i) { 
-        return (2 * i + 1); 
-    }
-
-    // Returns the minimum item from min heap
-    float peek_min() { 
-        return H[0]; 
-    }
-  
-    // get and delete minimum element
-    float extract_min();
-  
-    // inserts a new item
-    void insert(float item);
-};
-  
-// Constructor: Builds a heap from a given array a[] of given size
-MinHeap::MinHeap(int cap) {
-    cur_size = 0;
-    max_size = cap;
-    H = new float[cap];
-}
-
-// heapify subtree with root at index n
-void MinHeap::heapify(int n) {
-    int l = left_index(n);
-    int r = right_index(n);
-    int smallest = n;
-    if (l < cur_size && H[l] < H[n])
-        smallest = l;
-    if (r < cur_size && H[r] < H[smallest])
-        smallest = r;
-    if (smallest != n)
-    {
-        swap(&H[n], &H[smallest]);
-        heapify(smallest);
-    }
-}
-
-// Method to remove minimum element (or root) from min heap
-float MinHeap::extract_min() {
-    // if heap is empty, return INT_MAX
-    if (cur_size <= 0) { return INT_MAX; } 
-    // if heap has only one element, return it
-    if (cur_size == 1) { cur_size--; return H[0]; }
-
-    // following section 2 pseudocode
-    float min_ele = H[0];
-    H[0] = H[cur_size-1];
-    cur_size--;
-    heapify(0);
-    return min_ele;
-}
-  
-// Inserts a new value v to heap
-void MinHeap::insert(float v) {
-    // check that heap is not full
-    if (cur_size == max_size) { printf("\nHeap overflow\n"); return; }
-  
-    // following section 2 pseudocode
-    cur_size++;
-    int n = cur_size - 1;
-    H[n] = v;
-  
-    while (n != 0 && H[parent_index(n)] > H[n]) {
-       swap(&H[parent_index(n)], &H[n]);
-       n = parent_index(n);
-    }
-}
-  
-// A utility function to swap two elements
-void swap(float *x, float *y) {
-    float temp = *x;
-    *x = *y;
-    *y = temp;
 }
