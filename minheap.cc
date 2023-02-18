@@ -5,11 +5,9 @@
 void swap(float *x, float *y);
 
 // a class for constructing binary heap
-class MinHeap
-{
+class MinHeap {
     
 public:
-
     float *H; // pointer to array H: elements in heap
     int max_size; // size of H array
     int cur_size; // Current number of elements in min heap
@@ -44,16 +42,14 @@ public:
 };
   
 // Constructor: Builds a heap from a given array a[] of given size
-MinHeap::MinHeap(int cap)
-{
+MinHeap::MinHeap(int cap) {
     cur_size = 0;
     max_size = cap;
     H = new float[cap];
 }
 
 // heapify subtree with root at index n
-void MinHeap::heapify(int n)
-{
+void MinHeap::heapify(int n) {
     int l = left_index(n);
     int r = right_index(n);
     int smallest = n;
@@ -69,8 +65,7 @@ void MinHeap::heapify(int n)
 }
 
 // Method to remove minimum element (or root) from min heap
-float MinHeap::extract_min()
-{
+float MinHeap::extract_min() {
     // if heap is empty, return INT_MAX
     if (cur_size <= 0) { return INT_MAX; } 
     // if heap has only one element, return it
@@ -85,8 +80,7 @@ float MinHeap::extract_min()
 }
   
 // Inserts a new value v to heap
-void MinHeap::insert(float v)
-{
+void MinHeap::insert(float v) {
     // check that heap is not full
     if (cur_size == max_size) { printf("\nHeap overflow\n"); return; }
   
@@ -102,8 +96,7 @@ void MinHeap::insert(float v)
 }
   
 // A utility function to swap two elements
-void swap(float *x, float *y)
-{
+void swap(float *x, float *y) {
     float temp = *x;
     *x = *y;
     *y = temp;
@@ -115,17 +108,31 @@ int main()
     MinHeap h(11);
     std::cout << "h.cur_size: " << h.cur_size << std::endl;
     for (int i = 10; i != 0; i--) {
-        std::cout << "i/10: " << i/10.0 << std::endl;
         h.insert(i/10.0);
     }
+
     for (int i = 0; i < 10; i++) {
-        std::cout << "h.H[" << i << "]: " << h.H[i] << std::endl;
+        std::cout << "extractmin: " << h.extract_min() << std::endl;
     }
-    float testExtract = h.extract_min();
-    std::cout << "testExtract: " << testExtract << std::endl;
+
+    std::cout << "h.cur_size: " << h.cur_size << std::endl;
+
+    // for (int i = 0; i < 10; i++) {
+    //     std::cout << "h.H[i]: " << h.H[i] << std::endl;
+    // }
+
+    // push more values in
+    for (int i = 10; i != 0; i--) {
+        h.insert(i/10.0);
+    }
+    std::cout << "h.cur_size: " << h.cur_size << std::endl;
+
     for (int i = 0; i < 10; i++) {
-        std::cout << "h.H[" << i << "]: " << h.H[i] << std::endl;
+        std::cout << "extractmin: " << h.extract_min() << std::endl;
     }
+    std::cout << "h.cur_size: " << h.cur_size << std::endl;
+
+
 
     // h.insert(1.0);
     // h.insert(0.5);

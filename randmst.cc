@@ -138,7 +138,6 @@ unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimensi
 
 
 
-
 // a class for constructing binary heap
 class MinHeap {
     
@@ -177,16 +176,14 @@ public:
 };
   
 // Constructor: Builds a heap from a given array a[] of given size
-MinHeap::MinHeap(int cap)
-{
+MinHeap::MinHeap(int cap) {
     cur_size = 0;
     max_size = cap;
     H = new float[cap];
 }
 
 // heapify subtree with root at index n
-void MinHeap::heapify(int n)
-{
+void MinHeap::heapify(int n) {
     int l = left_index(n);
     int r = right_index(n);
     int smallest = n;
@@ -202,8 +199,7 @@ void MinHeap::heapify(int n)
 }
 
 // Method to remove minimum element (or root) from min heap
-float MinHeap::extract_min()
-{
+float MinHeap::extract_min() {
     // if heap is empty, return INT_MAX
     if (cur_size <= 0) { return INT_MAX; } 
     // if heap has only one element, return it
@@ -218,8 +214,7 @@ float MinHeap::extract_min()
 }
   
 // Inserts a new value v to heap
-void MinHeap::insert(float v)
-{
+void MinHeap::insert(float v) {
     // check that heap is not full
     if (cur_size == max_size) { printf("\nHeap overflow\n"); return; }
   
@@ -235,8 +230,7 @@ void MinHeap::insert(float v)
 }
   
 // A utility function to swap two elements
-void swap(float *x, float *y)
-{
+void swap(float *x, float *y) {
     float temp = *x;
     *x = *y;
     *y = temp;
