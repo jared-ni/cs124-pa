@@ -28,6 +28,7 @@ int main(int argc,char* argv[]) {
     cout << "numpoints: " << numpoints << endl;
     cout << "numtrials: " << numtrials << endl;
     cout << "dimension: " << dimension << endl;
+    cout << endl;
 
     srand (static_cast <unsigned> (time(0)));
 
@@ -40,8 +41,9 @@ int main(int argc,char* argv[]) {
         }
     }
 
-    // float total_weight = prim(graph);
-    // cout << "total weight: " << total_weight << endl;
+    float total_weight = prim(graph);
+    cout << endl;
+    cout << "total weight: " << total_weight << endl;
 
 
     // Run algorithm 5 times per n value
@@ -85,18 +87,20 @@ float prim(unordered_map<int, vector<tuple<int, float>>> graph) {
     // initialize dist to infinity (2.0)
     for (int i = 0; i < graph.size(); i++) {
 
-        dist[i] = 2.0;
+        dist[i] = 100000.0;
     }
     dist[0] = 0.0;
     // insert starting vertex into H
     H.insert(make_tuple(0, 0.0));
     while (H.cur_size != 0) {
         tuple<int, float> v = H.extract_min();
+        cout << "current vertex: " << get<0>(v) << ", weight: " << get<1>(v) << endl;
+
         S.insert(get<0>(v));
         // for each neighbor of v
         for (tuple<int, float> neighbor : graph[get<0>(v)]) {
             // if neighbor is not in S, add it to H
-            if (dist[get<0>(neighbor)] > get<1>(neighbor)) {
+            if (dist[get<0>(neighbor)] > get<1>(neighbor) && S.find(get<0>(neighbor)) == S.end()) {
                 dist[get<0>(neighbor)] = get<1>(neighbor);
                 H.insert(neighbor);
             }
@@ -208,6 +212,5 @@ unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimensi
             }
         }
     }
-    return graph;     
-    
+    return graph;
 }
