@@ -7,6 +7,8 @@
 #include <climits>
 #include <set>
 #include "minheap.h"
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -16,44 +18,37 @@ float rand_num();
 
 // ./randmst 0 numpoints numtrials dimension
 int main(int argc,char* argv[]) {
-    // printf("Number of arguments: %i\n", argc);
-    // printf("Arguments are: %s\n", argv[0]);
+    // establish parameters
+    int flexibility = atoi(argv[1]);
+    // test numpoints = 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 
+    int numpoints = atoi(argv[2]);
+    int numtrials = atoi(argv[3]); 
+    int dimension = atoi(argv[4]);
+    cout << "flexibility: " << flexibility << endl;
+    cout << "numpoints: " << numpoints << endl;
+    cout << "numtrials: " << numtrials << endl;
+    cout << "dimension: " << dimension << endl;
 
-    // // establish parameters
-    // int flexibility = atoi(argv[1]);
-    // // test numpoints = 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 
-    // int numpoints = atoi(argv[2]);
-    // int numtrials = atoi(argv[3]); 
-    // int dimension = atoi(argv[4]);
-    
-    // construct graph depending on dimension
-    // run Prim's Algorithm
-    unordered_map<int, vector<tuple<int, float>>> graph;
-    graph[0] = vector<tuple<int, float>>();
-    graph[0].push_back(make_tuple(1, 0.0));
-    graph[0].push_back(make_tuple(2, 0.3));
-    graph[0].push_back(make_tuple(3, 0.4));
-    graph[1] = vector<tuple<int, float>>();
-    graph[1].push_back(make_tuple(0, 0.0));
-    graph[1].push_back(make_tuple(2, 0.5));
-    graph[1].push_back(make_tuple(3, 0.6));
-    graph[2] = vector<tuple<int, float>>();
-    graph[2].push_back(make_tuple(0, 0.3));
-    graph[2].push_back(make_tuple(1, 0.5));
-    graph[2].push_back(make_tuple(3, 0.7));
-    graph[3] = vector<tuple<int, float>>();
-    graph[3].push_back(make_tuple(0, 0.4));
-    graph[3].push_back(make_tuple(1, 0.6));
-    graph[3].push_back(make_tuple(2, 0.7));
+    srand (static_cast <unsigned> (time(0)));
 
-    float total_weight = prim(graph);
-    cout << "total weight: " << total_weight << endl;
+    unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
 
-    // unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
+    for (auto const& i : graph) {
+        cout << "vertex: " << i.first << endl;
+        for (auto const& j : i.second) {
+            cout << "neighbor: " << get<0>(j) << " weight: " << get<1>(j) << endl;
+        }
+    }
+
+    // float total_weight = prim(graph);
+    // cout << "total weight: " << total_weight << endl;
+
+
+    // Run algorithm 5 times per n value
     // int avg_weight = 0.0;
     // for (int i = 0; i < numpoints; i++) {
-    //     unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
-    //     avg_weight += prim(graph);
+    //     unordered_map<int, vector<tuple<int, float>>> trial_graph = construct_graph(numpoints, dimension);
+    //     avg_weight += prim(trial_graph);
     // }
     // avg_weight /= numtrials;
     // cout << avg_weight;
@@ -147,9 +142,9 @@ unordered_map<int, vector<tuple<float, float, float, float>>> vertex_dict4(int n
 
 // returns random number between 0 and 1
 float rand_num() {
-    float weight = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    return weight;
+    return ((float)rand()) / RAND_MAX;
 }
+
 
 // calculates edge weight for dimension 2
 float calc_weight2(int i, int j, unordered_map<int, vector<tuple<float, float>>> vertices) {
@@ -192,12 +187,16 @@ unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimensi
     unordered_map<int, vector<tuple<int, float>>> graph;
     for (int i=0; i<n; i++) {
         graph[i] = vector<tuple<int, float>>();
+        if (dimension == 0) {
+            for (int j=0; j<i; j++) {
+                float randnum = rand_num();
+                graph[i].push_back(make_tuple(j, randnum));
+                graph[j].push_back(make_tuple(i, randnum));
+            }
+        }
         for (int j=0; j<n; j++) {
             if (i != j) {
-                if (dimension == 0) {
-                    graph[i].push_back(make_tuple(j, rand_num()));
-                }
-                else if (dimension == 2) {
+                if (dimension == 2) {
                     graph[i].push_back(make_tuple(j, calc_weight2(i, j, vertices2)));
                 }
                 else if (dimension == 3) {
@@ -208,7 +207,6 @@ unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimensi
                 }
             }
         }
-    } 
-
+    }
     return graph;     
 }
