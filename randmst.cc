@@ -30,14 +30,21 @@ int main(int argc,char* argv[]) {
     // run Prim's Algorithm
     unordered_map<int, vector<tuple<int, float>>> graph;
     graph[0] = vector<tuple<int, float>>();
-    graph[0].push_back(make_tuple(1, 0.5));
-    graph[0].push_back(make_tuple(2, 0.5));
+    graph[0].push_back(make_tuple(1, 0.0));
+    graph[0].push_back(make_tuple(2, 0.3));
+    graph[0].push_back(make_tuple(3, 0.4));
     graph[1] = vector<tuple<int, float>>();
-    graph[1].push_back(make_tuple(0, 0.5));
+    graph[1].push_back(make_tuple(0, 0.0));
     graph[1].push_back(make_tuple(2, 0.5));
+    graph[1].push_back(make_tuple(3, 0.6));
     graph[2] = vector<tuple<int, float>>();
-    graph[2].push_back(make_tuple(0, 0.5));
+    graph[2].push_back(make_tuple(0, 0.3));
     graph[2].push_back(make_tuple(1, 0.5));
+    graph[2].push_back(make_tuple(3, 0.7));
+    graph[3] = vector<tuple<int, float>>();
+    graph[3].push_back(make_tuple(0, 0.4));
+    graph[3].push_back(make_tuple(1, 0.6));
+    graph[3].push_back(make_tuple(2, 0.7));
 
     float total_weight = prim(graph);
     cout << "total weight: " << total_weight << endl;
@@ -146,19 +153,25 @@ float rand_num() {
 
 // calculates edge weight for dimension 2
 float calc_weight2(int i, int j, unordered_map<int, vector<tuple<float, float>>> vertices) {
-    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) + pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2));
+    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) + 
+                        pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2));
     return weight;
 }
 
 // calculates edge weight for dimension 3
 float calc_weight3(int i, int j, unordered_map<int, vector<tuple<float, float, float>>> vertices) {
-    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) + pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2) + pow(get<2>(vertices[i].front()) - get<2>(vertices[j].front()), 2));
+    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) + 
+                        pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2) + 
+                        pow(get<2>(vertices[i].front()) - get<2>(vertices[j].front()), 2));
     return weight;
 }
 
 // calculates edge weight for dimension 4
 float calc_weight4(int i, int j, unordered_map<int, vector<tuple<float, float, float, float>>> vertices) {
-    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) + pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2) + pow(get<2>(vertices[i].front()) - get<2>(vertices[j].front()), 2) + pow(get<3>(vertices[i].front()) - get<3>(vertices[j].front()), 2));
+    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) + 
+                        pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2) + 
+                        pow(get<2>(vertices[i].front()) - get<2>(vertices[j].front()), 2) + 
+                        pow(get<3>(vertices[i].front()) - get<3>(vertices[j].front()), 2));
     return weight;
 }
 
