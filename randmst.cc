@@ -94,6 +94,7 @@ float prim(unordered_map<int, vector<tuple<int, float>>> graph) {
     H.insert(make_tuple(0, 0.0));
     while (H.cur_size != 0) {
         tuple<int, float> v = H.extract_min();
+        
         cout << "current vertex: " << get<0>(v) << ", weight: " << get<1>(v) << endl;
 
         S.insert(get<0>(v));
