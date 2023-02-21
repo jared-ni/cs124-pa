@@ -39,6 +39,14 @@ int main(int argc, char *argv[])
 
     // construct graph
     unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
+    for (auto it = graph.begin(); it != graph.end(); it++)
+    {
+        cout << "vertex: " << it->first << endl;
+        for (tuple<int, float> neighbor : it->second)
+        {
+            cout << "neighbor: " << get<0>(neighbor) << ", weight: " << get<1>(neighbor) << endl;
+        }
+    }
     // run prim
     float total_weight = prim(graph);
     cout << "total weight: " << total_weight << endl;
@@ -121,7 +129,6 @@ float prim(unordered_map<int, vector<tuple<int, float>>> graph)
     while (H.cur_size != 0)
     {
         tuple<int, float> v = H.extract_min();
-        cout << "current vertex: " << get<0>(v) << ", weight: " << get<1>(v) << endl;
 
         S.insert(get<0>(v));
         // for each neighbor of v
@@ -130,9 +137,11 @@ float prim(unordered_map<int, vector<tuple<int, float>>> graph)
             // if neighbor is not in S, add it to H
             if (dist[get<0>(neighbor)] > get<1>(neighbor) && S.find(get<0>(neighbor)) == S.end())
             {
-                cout << "neighbor: " << get<0>(neighbor) << ", weight: " << get<1>(neighbor) << endl;
                 dist[get<0>(neighbor)] = get<1>(neighbor);
                 H.insert(neighbor);
+            }
+            else {
+                
             }
         }
     }
