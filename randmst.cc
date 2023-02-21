@@ -43,14 +43,14 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-
 // runs all n for one dimension for one iteration
-void one_iteration_trials(int dimensions) {
-    for (int n = 128; n <= 262144; n *= 2) {
+void one_iteration_trials(int dimensions)
+{
+    for (int n = 128; n <= 262144; n *= 2)
+    {
         dimension_trial(n, dimensions);
     }
 }
-
 
 // dimension_trial0
 void dimension_trial(int n, int dimensions)
@@ -82,25 +82,22 @@ void dimension_trial(int n, int dimensions)
 
     auto stop = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
-    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << 
-                                                                duration.count() << " ms" << endl;
-    
+    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << duration.count() << " ms" << endl;
+
     start = chrono::high_resolution_clock::now();
     float total_weight = prim(graph, n, graphSize);
     stop = chrono::high_resolution_clock::now();
     duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
-    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << 
-                                                                duration.count() << " ms" << endl;
+    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
 
     cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
 }
 
-
 // use Prim's Algorithm to find minimum spanning tree using our minHeap
 // returns the total weight of the MST
 float prim(vector<tuple<int, float>> *graph, int n, int graphSize)
-{   
-    cout << "starting Prim on graph size " << graphSize << endl; 
+{
+    cout << "starting Prim on graph size " << graphSize << endl;
     float total_weight = 0.0;
     set<int> S;
     MinHeap H = MinHeap(graphSize);
@@ -188,7 +185,7 @@ int construct_graph2(int n, vector<tuple<int, float>> *vList)
     for (int i = 0; i < n; i++)
     {
         // loop through all nodes again
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < i; j++)
         {
             // add edge to vList
             if (i != j)
@@ -199,6 +196,7 @@ int construct_graph2(int n, vector<tuple<int, float>> *vList)
                 if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.4) || (n >= 1000 && n < 10000 && weight < 0.1) || (n >= 10000 && weight < 0.05))
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
+                    (vList + j)->push_back(make_tuple(i, weight));
                     c++;
                 }
             }
@@ -228,7 +226,7 @@ int construct_graph3(int n, vector<tuple<int, float>> *vList)
     for (int i = 0; i < n; i++)
     {
         // loop through all nodes again
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < i; j++)
         {
             // add edge to vList
             if (i != j)
@@ -240,6 +238,7 @@ int construct_graph3(int n, vector<tuple<int, float>> *vList)
                 if (n <= 100 || weight < 0.6)
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
+                    (vList + j)->push_back(make_tuple(i, weight));
                     c++;
                 }
             }
@@ -266,7 +265,7 @@ int construct_graph4(int n, vector<tuple<int, float>> *vList)
     for (int i = 0; i < n; i++)
     {
         // loop through all nodes again
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < i; j++)
         {
             // add edge to vList
             if (i != j)
@@ -279,6 +278,7 @@ int construct_graph4(int n, vector<tuple<int, float>> *vList)
                 if (n <= 100 || weight < 0.8)
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
+                    (vList + j)->push_back(make_tuple(i, weight));
                     c++;
                 }
             }
