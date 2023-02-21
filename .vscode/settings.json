@@ -68,6 +68,8 @@
     "functional": "cpp",
     "iterator": "cpp",
     "utility": "cpp",
-    "set": "cpp"
+    "set": "cpp",
+    "bit": "cpp",
+    "__functional_base": "cpp"
   }
 }
