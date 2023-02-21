@@ -75,7 +75,8 @@ void dimension_trial(int n, int dimensions)
 // use Prim's Algorithm to find minimum spanning tree using our minHeap
 // returns the total weight of the MST
 float prim(vector<tuple<int, float>> *graph, int n, int graphSize)
-{
+{   
+    cout << "starting Prim on graph size " << graphSize << endl; 
     float total_weight = 0.0;
     set<int> S;
     MinHeap H = MinHeap(graphSize);
