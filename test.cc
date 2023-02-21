@@ -40,12 +40,12 @@ int main(int argc, char *argv[])
     {
         // construct graph dimension 0
         float weight = dimension_trial(numpoints, dimension);
-        // if (weight > max_weight)
-        // {
-        //     max_weight = weight;
-        // }
-        cout << "FINAL MAX: " << weight << endl;
+        if (weight > max_weight)
+        {
+            max_weight = weight;
+        }
     }
+    cout << "FINAL MAX: " << max_weight << endl;
 
     // std::thread dimension_thread1(dimension_trial, numtrials, 0);
     // dimension_thread1.join();
@@ -126,7 +126,7 @@ float prim(vector<tuple<int, float>> *graph, int n)
         }
     }
     cout << "max weight: " << max_weight << endl;
-    return total_weight;
+    return max_weight;
 }
 
 // returns random number between 0 and 1
@@ -148,7 +148,7 @@ void construct_graph0(int n, vector<tuple<int, float>> *vList)
             // add edge to vList
             float randnum = rand_num();
             // this check is only accurate for n > 100
-            if ((n < 1000 && randnum < 0.2) || (n >= 1000 && n < 10000 && randnum < 0.1) || (n >= 10000 && randnum < 0.01))
+            if ((n <= 100) || (n > 100 && n < 1000 && randnum < 0.2) || (n >= 1000 && n < 10000 && randnum < 0.1) || (n >= 10000 && randnum < 0.01))
             {
                 (*(vList + i)).push_back(make_tuple(j, randnum));
                 (vList + j)->push_back(make_tuple(i, randnum));
@@ -184,7 +184,7 @@ void construct_graph2(int n, vector<tuple<int, float>> *vList)
                 float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) +
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2));
                 // this check is only accurate for n > 100
-                if (weight >= 0)
+                if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.4) || (n >= 1000 && n < 10000 && weight < 0.1) || (n >= 10000 && weight < 0.05))
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
                 }

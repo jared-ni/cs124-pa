@@ -15,9 +15,9 @@ using namespace std;
 
 // make graph a pointer and not return it
 int construct_graph0(int n, vector<tuple<int, float>> *adjList);
-void construct_graph2(int n, vector<tuple<int, float>> *adjList);
-void construct_graph3(int n, vector<tuple<int, float>> *adjList);
-void construct_graph4(int n, vector<tuple<int, float>> *adjList);
+int construct_graph2(int n, vector<tuple<int, float>> *adjList);
+int construct_graph3(int n, vector<tuple<int, float>> *adjList);
+int construct_graph4(int n, vector<tuple<int, float>> *adjList);
 float prim(vector<tuple<int, float>> *graph, int n, int graphSize);
 float rand_num();
 
@@ -58,15 +58,15 @@ void dimension_trial(int n, int dimensions)
     }
     else if (dimensions == 2)
     {
-        construct_graph2(n, vList);
+        graphSize = construct_graph2(n, vList);
     }
     else if (dimensions == 3)
     {
-        construct_graph3(n, vList);
+        graphSize = construct_graph3(n, vList);
     }
     else if (dimensions == 4)
     {
-        construct_graph4(n, vList);
+        graphSize = construct_graph4(n, vList);
     }
     float total_weight = prim(graph, n, graphSize);
     cout << "Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
@@ -148,8 +148,9 @@ int construct_graph0(int n, vector<tuple<int, float>> *vList)
 }
 
 // construct graph for dimension 2 with n nodes
-void construct_graph2(int n, vector<tuple<int, float>> *vList)
+int construct_graph2(int n, vector<tuple<int, float>> *vList)
 {
+    int c = 0;
     // get coordinates
     tuple<float, float> coordinates[n];
     for (int i = 0; i < n; i++)
@@ -170,18 +171,25 @@ void construct_graph2(int n, vector<tuple<int, float>> *vList)
                 float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) +
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2));
                 // this check is only accurate for n >= 100
-                if (n <= 100 || weight < 0.4)
+                if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.4) || (n >= 1000 && n < 10000 && weight < 0.1) || (n >= 10000 && weight < 0.05))
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
+                    c++;
                 }
             }
         }
+        if (i % 1000 == 0)
+        {
+            cout << "i: " << i << endl;
+        }
     }
+    return c;
 }
 
 // construct graph for dimension 3 with n nodes
-void construct_graph3(int n, vector<tuple<int, float>> *vList)
+int construct_graph3(int n, vector<tuple<int, float>> *vList)
 {
+    int c = 0;
     // get coordinates
     tuple<float, float, float> coordinates[n];
     for (int i = 0; i < n; i++)
@@ -207,15 +215,18 @@ void construct_graph3(int n, vector<tuple<int, float>> *vList)
                 if (n <= 100 || weight < 0.6)
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
+                    c++;
                 }
             }
         }
     }
+    return c;
 }
 
 // construct graph for dimension 4 with n nodes
-void construct_graph4(int n, vector<tuple<int, float>> *vList)
+int construct_graph4(int n, vector<tuple<int, float>> *vList)
 {
+    int c = 0;
     // get coordinates
     tuple<float, float, float, float> coordinates[n];
     for (int i = 0; i < n; i++)
@@ -243,8 +254,10 @@ void construct_graph4(int n, vector<tuple<int, float>> *vList)
                 if (n <= 100 || weight < 0.8)
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
+                    c++;
                 }
             }
         }
     }
+    return c;
 }
