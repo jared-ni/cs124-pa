@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
     int dimension = atoi(argv[4]);
 
     srand(static_cast<unsigned>(time(0)));
-
     // construct graph dimension 0
     dimension_trial(numpoints, dimension);
 
@@ -44,6 +43,15 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+
+// runs all n for one dimension for one iteration
+void one_iteration_trials(int dimensions) {
+    for (int n = 128; n <= 262144; n *= 2) {
+        dimension_trial(n, dimensions);
+    }
+}
+
+
 // dimension_trial0
 void dimension_trial(int n, int dimensions)
 {
@@ -52,6 +60,9 @@ void dimension_trial(int n, int dimensions)
     vector<tuple<int, float>> *vList;
     vList = graph;
     int graphSize = 0;
+
+    auto start = chrono::high_resolution_clock::now();
+
     if (dimensions == 0)
     {
         graphSize = construct_graph0(n, vList);
@@ -68,14 +79,28 @@ void dimension_trial(int n, int dimensions)
     {
         graphSize = construct_graph4(n, vList);
     }
+
+    auto stop = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << 
+                                                                duration.count() << " ms" << endl;
+    
+    start = chrono::high_resolution_clock::now();
     float total_weight = prim(graph, n, graphSize);
-    cout << "Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
+    stop = chrono::high_resolution_clock::now();
+    duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << 
+                                                                duration.count() << " ms" << endl;
+
+    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
 }
+
 
 // use Prim's Algorithm to find minimum spanning tree using our minHeap
 // returns the total weight of the MST
 float prim(vector<tuple<int, float>> *graph, int n, int graphSize)
-{
+{   
+    cout << "starting Prim on graph size " << graphSize << endl; 
     float total_weight = 0.0;
     set<int> S;
     MinHeap H = MinHeap(graphSize);
