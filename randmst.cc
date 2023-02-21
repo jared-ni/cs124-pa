@@ -13,12 +13,15 @@
 
 using namespace std;
 
-void prim_trial(int dimension);
-void dimension_trial(int numtrials, int dimension);
-
-unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimension);
-float prim(unordered_map<int, vector<tuple<int, float>>> graph);
+// make graph a pointer and not return it
+void construct_graph0(int n, vector<tuple<int, float>>* adjList);
+void construct_graph2(int n, vector<tuple<int, float>>* adjList);
+void construct_graph3(int n, vector<tuple<int, float>>* adjList);
+void construct_graph4(int n, vector<tuple<int, float>>* adjList);
+float prim(vector<tuple<int, float>>* graph, int n);
 float rand_num();
+
+void dimension_trial(int n, int dimensions);
 
 // ./randmst 0 numpoints numtrials dimension
 int main(int argc, char *argv[])
@@ -32,80 +35,45 @@ int main(int argc, char *argv[])
 
     srand(static_cast<unsigned>(time(0)));
 
-    // construct graph
-    unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
-
-    // float total_weight = prim(graph);
-    // cout << "numpoints: " << numpoints << ", dimension: " << dimension << ", total weight: " << total_weight << endl;
-    std::thread dimension_thread1(dimension_trial, numtrials, 0);
-    std::thread dimension_thread2(dimension_trial, numtrials, 2);
-    std::thread dimension_thread3(dimension_trial, numtrials, 3);
-    std::thread dimension_thread4(dimension_trial, numtrials, 4);
+    // construct graph dimension 0
+    dimension_trial(numpoints, dimension);
     
-    dimension_thread1.join();
-    dimension_thread2.join();
-    dimension_thread3.join();
-    dimension_thread4.join();
+    // std::thread dimension_thread1(dimension_trial, numtrials, 0);
+    // dimension_thread1.join();
 
     return 0;
 }
 
-// another layer
-void dimension_trial(int numtrials, int dimension)
-{
-    // 5 threads for 5 trials
-    std::thread thread_obj1(prim_trial, dimension);
-    std::thread thread_obj2(prim_trial, dimension);
-    std::thread thread_obj3(prim_trial, dimension);
-    std::thread thread_obj4(prim_trial, dimension);
-    std::thread thread_obj5(prim_trial, dimension);
-    thread_obj1.join();
-    thread_obj2.join();
-    thread_obj3.join();
-    thread_obj4.join();
-    thread_obj5.join();
+// dimension_trial0
+void dimension_trial(int n, int dimensions) {
+    // construct graph dimension 0
+    vector<tuple<int, float>> graph[n];
+    vector<tuple<int, float>>* vList;
+    vList = graph;
+    if (dimensions == 0) {
+        construct_graph0(n, vList);
+    } else if (dimensions == 1) {
+        construct_graph2(n, vList);
+    } else if (dimensions == 2) {
+        construct_graph3(n, vList);
+    } else if (dimensions == 3) {
+        construct_graph4(n, vList);
+    }
+    float total_weight = prim(graph, n);
+    cout << "Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
 }
 
-// trial data function
-void prim_trial(int dimension)
-{
-    for (int n = 128; n <= 262144; n *= 2)
-    {
-        unordered_map<int, vector<tuple<int, float>>> trial_graph = construct_graph(n, dimension);
-        float total_weight = prim(trial_graph);
-        cout << "Thread-" << this_thread::get_id() << ", total weight: " << total_weight << ", numpoints: " << n << ", dimension: " << dimension << endl;
-    }
-}
 
 // use Prim's Algorithm to find minimum spanning tree using our minHeap
 // returns the total weight of the MST
-
-/*
-PrimMST(graph G)
-    for each vertex v in G:
-        v.distance = infinity
-    start = arbitrary vertex
-    start.distance = 0
-    priorityQueue = all vertices in G
-    while priorityQueue is not empty:
-        u = vertex with smallest distance in priorityQueue
-        remove u from priorityQueue
-        for each neighbor v of u:
-            if v is in priorityQueue and weight(u, v) < v.distance:
-                v.distance = weight(u, v)
-                v.parent = u
-    return MST
-*/
-
-float prim(unordered_map<int, vector<tuple<int, float>>> graph)
+float prim(vector<tuple<int, float>>* graph, int n)
 {
     float total_weight = 0.0;
     set<int> S;
-    MinHeap H = MinHeap(graph.size() * (graph.size() - 1) / 2);
-    float dist[graph.size()];
-    cout << "graph size: " << graph.size() << endl;
+    MinHeap H = MinHeap(n * (n - 1) / 2);
+    float dist[n];
     // initialize dist to infinity (2.0)
-    for (int i = 0; i < graph.size(); i++)
+    for (int i = 0; i < n; i++)
     {
         dist[i] = 100000.0;
     }
@@ -115,10 +83,11 @@ float prim(unordered_map<int, vector<tuple<int, float>>> graph)
     while (H.cur_size != 0)
     {
         tuple<int, float> v = H.extract_min();
+        // cout << "v: " << get<0>(v) << ", weight: " << get<1>(v) << endl;
 
         S.insert(get<0>(v));
         // for each neighbor of v
-        for (tuple<int, float> neighbor : graph[get<0>(v)])
+        for (tuple<int, float> neighbor : *(graph + get<0>(v)))
         {
             // if neighbor is not in S, add it to H
             if (dist[get<0>(neighbor)] > get<1>(neighbor) && S.find(get<0>(neighbor)) == S.end())
@@ -126,30 +95,14 @@ float prim(unordered_map<int, vector<tuple<int, float>>> graph)
                 dist[get<0>(neighbor)] = get<1>(neighbor);
                 H.insert(neighbor);
             }
-            else {
-                
-            }
         }
     }
     // calculate total weight
-    for (int i = 0; i < graph.size(); i++)
-    {
-        total_weight += dist[i];
-        // cout << "current weight: " << total_weight << endl;
-    }
-    return total_weight;
-}
-
-// randomizes vertices for dimension 2
-unordered_map<int, vector<tuple<float, float>>> vertex_dict2(int n)
-{
-    unordered_map<int, vector<tuple<float, float>>> vertices;
     for (int i = 0; i < n; i++)
     {
-        vertices[i] = vector<tuple<float, float>>();
-        vertices[i].push_back(make_tuple(rand_num(), rand_num()));
+        total_weight += dist[i];
     }
-    return vertices;
+    return total_weight;
 }
 
 // randomizes vertices for dimension 3
@@ -182,85 +135,95 @@ float rand_num()
     return ((float)rand()) / RAND_MAX;
 }
 
-// calculates edge weight for dimension 2
-float calc_weight2(int i, int j, unordered_map<int, vector<tuple<float, float>>> vertices)
-{
-    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) +
-                        pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2));
-    return weight;
-}
-
-// calculates edge weight for dimension 3
-float calc_weight3(int i, int j, unordered_map<int, vector<tuple<float, float, float>>> vertices)
-{
-    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) +
-                        pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2) +
-                        pow(get<2>(vertices[i].front()) - get<2>(vertices[j].front()), 2));
-    return weight;
-}
-
-// calculates edge weight for dimension 4
-float calc_weight4(int i, int j, unordered_map<int, vector<tuple<float, float, float, float>>> vertices)
-{
-    float weight = sqrt(pow(get<0>(vertices[i].front()) - get<0>(vertices[j].front()), 2) +
-                        pow(get<1>(vertices[i].front()) - get<1>(vertices[j].front()), 2) +
-                        pow(get<2>(vertices[i].front()) - get<2>(vertices[j].front()), 2) +
-                        pow(get<3>(vertices[i].front()) - get<3>(vertices[j].front()), 2));
-    return weight;
-}
-
-// construct graph with n nodes and randomized weights for dimension n
-unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimension)
-{
-    unordered_map<int, vector<tuple<float, float>>> vertices2 = {};
-    unordered_map<int, vector<tuple<float, float, float>>> vertices3 = {};
-    unordered_map<int, vector<tuple<float, float, float, float>>> vertices4 = {};
-    if (dimension == 2)
-    {
-        vertices2 = vertex_dict2(n);
-    }
-    else if (dimension == 3)
-    {
-        vertices3 = vertex_dict3(n);
-    }
-    else if (dimension == 4)
-    {
-        vertices4 = vertex_dict4(n);
-    }
-    unordered_map<int, vector<tuple<int, float>>> graph;
-    for (int i = 0; i < n; i++)
-    {
-        graph[i] = vector<tuple<int, float>>();
-        if (dimension == 0)
-        {
-            for (int j = 0; j < i; j++)
-            {
-                float randnum = rand_num();
-                graph[i].push_back(make_tuple(j, randnum));
-                graph[j].push_back(make_tuple(i, randnum));
-            }
+// construct graph for dimension 1 with n nodes
+void construct_graph0(int n, vector<tuple<int, float>>* vList) {
+    // loop through all nodes
+    for (int i = 0; i < n; i++) {
+        // vector<tuple<int, float>> current = *(vList + i);
+        // loop through all nodes again
+        for (int j = 0; j < i; j++) {
+            // add edge to vList
+            float randnum = rand_num();
+            (*(vList + i)).push_back(make_tuple(j, randnum));
+              (vList + j)->push_back(make_tuple(i, randnum));
         }
-        else
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (i != j)
-                {
-                    if (dimension == 2)
-                    {
-                        graph[i].push_back(make_tuple(j, calc_weight2(i, j, vertices2)));
-                    }
-                    else if (dimension == 3)
-                    {
-                        graph[i].push_back(make_tuple(j, calc_weight3(i, j, vertices3)));
-                    }
-                    else if (dimension == 4)
-                    {
-                        graph[i].push_back(make_tuple(j, calc_weight4(i, j, vertices4)));
-                    }
-                }
+        // if (i % 1000 == 0) {
+        //     cout << "i: " << i << endl;
+        // }
+    }
+}
+
+// construct graph for dimension 2 with n nodes
+void construct_graph2(int n, vector<tuple<int, float>>* vList) {
+    // get coordinates
+    tuple<float, float> coordinates[n];
+    for (int i = 0; i < n; i++) {
+        float a = rand_num();
+        float b = rand_num();
+        coordinates[i] = make_tuple(a, b);
+    }
+    // loop through all nodes
+    for (int i = 0; i < n; i++) {
+        // loop through all nodes again
+        for (int j = 0; j < n; j++) {
+            // add edge to vList
+            if (i != j) {
+                float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) + 
+                                    pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2));
+                (vList + i)->push_back(make_tuple(j, weight));
             }
         }
     }
-    return graph;
+}
+
+// construct graph for dimension 3 with n nodes
+void construct_graph3(int n, vector<tuple<int, float>>* vList) {
+    // get coordinates
+    tuple<float, float, float> coordinates[n];
+    for (int i = 0; i < n; i++) {
+        float a = rand_num();
+        float b = rand_num();
+        float c = rand_num();
+        coordinates[i] = make_tuple(a, b, c);
+    }
+    // loop through all nodes
+    for (int i = 0; i < n; i++) {
+        // loop through all nodes again
+        for (int j = 0; j < n; j++) {
+            // add edge to vList
+            if (i != j) {
+                float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) + 
+                                    pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2) +
+                                    pow(get<2>(coordinates[i]) - get<2>(coordinates[j]), 2));
+                (vList + i)->push_back(make_tuple(j, weight));
+            }
+        }
+    }
+}
+
+// construct graph for dimension 4 with n nodes
+void construct_graph4(int n, vector<tuple<int, float>>* vList) {
+    // get coordinates
+    tuple<float, float, float, float> coordinates[n];
+    for (int i = 0; i < n; i++) {
+        float a = rand_num();
+        float b = rand_num();
+        float c = rand_num();
+        float d = rand_num();
+        coordinates[i] = make_tuple(a, b, c, d);
+    }
+    // loop through all nodes
+    for (int i = 0; i < n; i++) {
+        // loop through all nodes again
+        for (int j = 0; j < n; j++) {
+            // add edge to vList
+            if (i != j) {
+                float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) + 
+                                    pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2) +
+                                    pow(get<2>(coordinates[i]) - get<2>(coordinates[j]), 2) +
+                                    pow(get<3>(coordinates[i]) - get<3>(coordinates[j]), 2));
+                (vList + i)->push_back(make_tuple(j, weight));
+            }
+        }
+    }
 }
