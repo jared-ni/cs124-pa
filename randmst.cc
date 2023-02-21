@@ -14,11 +14,11 @@
 using namespace std;
 
 // make graph a pointer and not return it
-void construct_graph0(int n, vector<tuple<int, float>> *adjList);
+int construct_graph0(int n, vector<tuple<int, float>> *adjList);
 void construct_graph2(int n, vector<tuple<int, float>> *adjList);
 void construct_graph3(int n, vector<tuple<int, float>> *adjList);
 void construct_graph4(int n, vector<tuple<int, float>> *adjList);
-float prim(vector<tuple<int, float>> *graph, int n);
+float prim(vector<tuple<int, float>> *graph, int n, int graphSize);
 float rand_num();
 
 void dimension_trial(int n, int dimensions);
@@ -51,9 +51,10 @@ void dimension_trial(int n, int dimensions)
     vector<tuple<int, float>> graph[n];
     vector<tuple<int, float>> *vList;
     vList = graph;
+    int graphSize = 0;
     if (dimensions == 0)
     {
-        construct_graph0(n, vList);
+        graphSize = construct_graph0(n, vList);
     }
     else if (dimensions == 2)
     {
@@ -67,17 +68,17 @@ void dimension_trial(int n, int dimensions)
     {
         construct_graph4(n, vList);
     }
-    float total_weight = prim(graph, n);
+    float total_weight = prim(graph, n, graphSize);
     cout << "Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
 }
 
 // use Prim's Algorithm to find minimum spanning tree using our minHeap
 // returns the total weight of the MST
-float prim(vector<tuple<int, float>> *graph, int n)
+float prim(vector<tuple<int, float>> *graph, int n, int graphSize)
 {
     float total_weight = 0.0;
     set<int> S;
-    MinHeap H = MinHeap(n * (n - 1) / 2);
+    MinHeap H = MinHeap(graphSize);
     float dist[n];
     // initialize dist to infinity (2.0)
     for (int i = 0; i < n; i++)
@@ -119,8 +120,9 @@ float rand_num()
 }
 
 // construct graph for dimension 1 with n nodes
-void construct_graph0(int n, vector<tuple<int, float>> *vList)
+int construct_graph0(int n, vector<tuple<int, float>> *vList)
 {
+    int c = 0;
     // loop through all nodes
     for (int i = 0; i < n; i++)
     {
@@ -134,6 +136,7 @@ void construct_graph0(int n, vector<tuple<int, float>> *vList)
             {
                 (*(vList + i)).push_back(make_tuple(j, randnum));
                 (vList + j)->push_back(make_tuple(i, randnum));
+                c++;
             }
         }
         if (i % 1000 == 0)
@@ -141,6 +144,7 @@ void construct_graph0(int n, vector<tuple<int, float>> *vList)
             cout << "i: " << i << endl;
         }
     }
+    return c;
 }
 
 // construct graph for dimension 2 with n nodes
