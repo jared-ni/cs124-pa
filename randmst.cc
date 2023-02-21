@@ -16,8 +16,8 @@ using namespace std;
 void prim_trial(int dimension);
 void dimension_trial(int numtrials, int dimension);
 
-unordered_map<int, set<tuple<int, float>>> construct_graph(int n, int dimension);
-float prim(unordered_map<int, set<tuple<int, float>>> graph);
+unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimension);
+float prim(unordered_map<int, vector<tuple<int, float>>> graph);
 float rand_num();
 
 // ./randmst 0 numpoints numtrials dimension
@@ -29,42 +29,23 @@ int main(int argc, char *argv[])
     int numpoints = atoi(argv[2]);
     int numtrials = atoi(argv[3]);
     int dimension = atoi(argv[4]);
-    cout << "flexibility: " << flexibility << endl;
-    cout << "numpoints: " << numpoints << endl;
-    cout << "numtrials: " << numtrials << endl;
-    cout << "dimension: " << dimension << endl;
-    cout << endl;
 
     srand(static_cast<unsigned>(time(0)));
 
     // construct graph
-    unordered_map<int, set<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
-    // for (auto it = graph.begin(); it != graph.end(); it++)
-    // {
-    //     cout << "vertex: " << it->first << endl;
-    //     for (tuple<int, float> neighbor : it->second)
-    //     {
-    //         cout << "neighbor: " << get<0>(neighbor) << ", weight: " << get<1>(neighbor) << endl;
-    //     }
-    // }
-    // run prim
-    float total_weight = prim(graph);
-    cout << "total weight: " << total_weight << endl;
+    unordered_map<int, vector<tuple<int, float>>> graph = construct_graph(numpoints, dimension);
 
-    // // test for every dimension
-    // for (int d = 1; d <= 4; d++)
-    // {
-    //     int cur_dimension = d;
-    //     if (cur_dimension == 1)
-    //     {
-    //         cur_dimension = 0;
-    //     }
-    //     // run dimension_trial for each dimension
-    //     std::thread thread_obj(dimension_trial, numtrials, cur_dimension);
-    //     thread_obj.join();
-    // }
-
-    // Run algorithm 5 times per n value
+    // float total_weight = prim(graph);
+    // cout << "numpoints: " << numpoints << ", dimension: " << dimension << ", total weight: " << total_weight << endl;
+    std::thread dimension_thread1(dimension_trial, numtrials, 0);
+    std::thread dimension_thread2(dimension_trial, numtrials, 2);
+    std::thread dimension_thread3(dimension_trial, numtrials, 3);
+    std::thread dimension_thread4(dimension_trial, numtrials, 4);
+    
+    dimension_thread1.join();
+    dimension_thread2.join();
+    dimension_thread3.join();
+    dimension_thread4.join();
 
     return 0;
 }
@@ -73,11 +54,16 @@ int main(int argc, char *argv[])
 void dimension_trial(int numtrials, int dimension)
 {
     // 5 threads for 5 trials
-    for (int i = 0; i < numtrials; i++)
-    {
-        std::thread thread_obj(prim_trial, dimension);
-        thread_obj.join();
-    }
+    std::thread thread_obj1(prim_trial, dimension);
+    std::thread thread_obj2(prim_trial, dimension);
+    std::thread thread_obj3(prim_trial, dimension);
+    std::thread thread_obj4(prim_trial, dimension);
+    std::thread thread_obj5(prim_trial, dimension);
+    thread_obj1.join();
+    thread_obj2.join();
+    thread_obj3.join();
+    thread_obj4.join();
+    thread_obj5.join();
 }
 
 // trial data function
@@ -85,7 +71,7 @@ void prim_trial(int dimension)
 {
     for (int n = 128; n <= 262144; n *= 2)
     {
-        unordered_map<int, set<tuple<int, float>>> trial_graph = construct_graph(n, dimension);
+        unordered_map<int, vector<tuple<int, float>>> trial_graph = construct_graph(n, dimension);
         float total_weight = prim(trial_graph);
         cout << "Thread-" << this_thread::get_id() << ", total weight: " << total_weight << ", numpoints: " << n << ", dimension: " << dimension << endl;
     }
@@ -111,7 +97,7 @@ PrimMST(graph G)
     return MST
 */
 
-float prim(unordered_map<int, set<tuple<int, float>>> graph)
+float prim(unordered_map<int, vector<tuple<int, float>>> graph)
 {
     float total_weight = 0.0;
     set<int> S;
@@ -141,7 +127,7 @@ float prim(unordered_map<int, set<tuple<int, float>>> graph)
                 H.insert(neighbor);
             }
             else {
-
+                
             }
         }
     }
@@ -224,11 +210,11 @@ float calc_weight4(int i, int j, unordered_map<int, vector<tuple<float, float, f
 }
 
 // construct graph with n nodes and randomized weights for dimension n
-unordered_map<int, set<tuple<int, float>>> construct_graph(int n, int dimension)
+unordered_map<int, vector<tuple<int, float>>> construct_graph(int n, int dimension)
 {
-    unordered_map<int, set<tuple<float, float>>> vertices2 = {};
-    unordered_map<int, set<tuple<float, float, float>>> vertices3 = {};
-    unordered_map<int, set<tuple<float, float, float, float>>> vertices4 = {};
+    unordered_map<int, vector<tuple<float, float>>> vertices2 = {};
+    unordered_map<int, vector<tuple<float, float, float>>> vertices3 = {};
+    unordered_map<int, vector<tuple<float, float, float, float>>> vertices4 = {};
     if (dimension == 2)
     {
         vertices2 = vertex_dict2(n);
@@ -241,17 +227,17 @@ unordered_map<int, set<tuple<int, float>>> construct_graph(int n, int dimension)
     {
         vertices4 = vertex_dict4(n);
     }
-    unordered_map<int, set<tuple<int, float>>> graph;
+    unordered_map<int, vector<tuple<int, float>>> graph;
     for (int i = 0; i < n; i++)
     {
-        graph[i] = set<tuple<int, float>>();
+        graph[i] = vector<tuple<int, float>>();
         if (dimension == 0)
         {
             for (int j = 0; j < i; j++)
             {
                 float randnum = rand_num();
-                graph[i].insert(make_tuple(j, randnum));
-                graph[j].insert(make_tuple(i, randnum));
+                graph[i].push_back(make_tuple(j, randnum));
+                graph[j].push_back(make_tuple(i, randnum));
             }
         }
         else
@@ -262,15 +248,15 @@ unordered_map<int, set<tuple<int, float>>> construct_graph(int n, int dimension)
                 {
                     if (dimension == 2)
                     {
-                        graph[i].insert(make_tuple(j, calc_weight2(i, j, vertices2)));
+                        graph[i].push_back(make_tuple(j, calc_weight2(i, j, vertices2)));
                     }
                     else if (dimension == 3)
                     {
-                        graph[i].insert(make_tuple(j, calc_weight3(i, j, vertices3)));
+                        graph[i].push_back(make_tuple(j, calc_weight3(i, j, vertices3)));
                     }
                     else if (dimension == 4)
                     {
-                        graph[i].insert(make_tuple(j, calc_weight4(i, j, vertices4)));
+                        graph[i].push_back(make_tuple(j, calc_weight4(i, j, vertices4)));
                     }
                 }
             }
