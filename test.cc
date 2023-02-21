@@ -21,7 +21,7 @@ void construct_graph4(int n, vector<tuple<int, float>> *adjList);
 float prim(vector<tuple<int, float>> *graph, int n);
 float rand_num();
 
-void dimension_trial(int n, int dimensions);
+float dimension_trial(int n, int dimensions);
 
 // ./randmst 0 numpoints numtrials dimension
 int main(int argc, char *argv[])
@@ -35,8 +35,17 @@ int main(int argc, char *argv[])
 
     srand(static_cast<unsigned>(time(0)));
 
-    // construct graph dimension 0
-    dimension_trial(numpoints, dimension);
+    float max_weight = 0.0;
+    for (int i = 0; i < numtrials; i++)
+    {
+        // construct graph dimension 0
+        float weight = dimension_trial(numpoints, dimension);
+        // if (weight > max_weight)
+        // {
+        //     max_weight = weight;
+        // }
+        cout << "FINAL MAX: " << weight << endl;
+    }
 
     // std::thread dimension_thread1(dimension_trial, numtrials, 0);
     // dimension_thread1.join();
@@ -45,7 +54,7 @@ int main(int argc, char *argv[])
 }
 
 // dimension_trial0
-void dimension_trial(int n, int dimensions)
+float dimension_trial(int n, int dimensions)
 {
     // construct graph dimension 0
     vector<tuple<int, float>> graph[n];
@@ -67,8 +76,9 @@ void dimension_trial(int n, int dimensions)
     {
         construct_graph4(n, vList);
     }
-    float total_weight = prim(graph, n);
-    cout << "Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
+    float max_weight = prim(graph, n);
+    cout << "Dimension: " << dimensions << ", n: " << n << ", total weight: " << max_weight << endl;
+    return max_weight;
 }
 
 // use Prim's Algorithm to find minimum spanning tree using our minHeap
@@ -105,10 +115,17 @@ float prim(vector<tuple<int, float>> *graph, int n)
         }
     }
     // calculate total weight
+    float max_weight = 0.0;
     for (int i = 0; i < n; i++)
     {
+        float prev_weight = total_weight;
         total_weight += dist[i];
+        if (max_weight < (total_weight - prev_weight))
+        {
+            max_weight = total_weight - prev_weight;
+        }
     }
+    cout << "max weight: " << max_weight << endl;
     return total_weight;
 }
 
@@ -130,7 +147,8 @@ void construct_graph0(int n, vector<tuple<int, float>> *vList)
         {
             // add edge to vList
             float randnum = rand_num();
-            if ((n <= 100) || (n > 100 && n < 1000 && randnum < 0.2) || (n >= 1000 && n < 10000 && randnum < 0.1) || (n >= 10000 && randnum < 0.01))
+            // this check is only accurate for n > 100
+            if ((n < 1000 && randnum < 0.2) || (n >= 1000 && n < 10000 && randnum < 0.1) || (n >= 10000 && randnum < 0.01))
             {
                 (*(vList + i)).push_back(make_tuple(j, randnum));
                 (vList + j)->push_back(make_tuple(i, randnum));
@@ -165,8 +183,8 @@ void construct_graph2(int n, vector<tuple<int, float>> *vList)
             {
                 float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) +
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2));
-                // this check is only accurate for n >= 100
-                if (n <= 100 || weight < 0.4)
+                // this check is only accurate for n > 100
+                if (weight >= 0)
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
                 }
@@ -200,7 +218,7 @@ void construct_graph3(int n, vector<tuple<int, float>> *vList)
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2) +
                                     pow(get<2>(coordinates[i]) - get<2>(coordinates[j]), 2));
                 // this check is only accurate for n > 100
-                if (n <= 100 || weight < 0.6)
+                if (weight < 0.6)
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
                 }
@@ -236,10 +254,7 @@ void construct_graph4(int n, vector<tuple<int, float>> *vList)
                                     pow(get<2>(coordinates[i]) - get<2>(coordinates[j]), 2) +
                                     pow(get<3>(coordinates[i]) - get<3>(coordinates[j]), 2));
                 // this check is only accurate for n > 100
-                if (n <= 100 || weight < 0.8)
-                {
-                    (vList + i)->push_back(make_tuple(j, weight));
-                }
+                (vList + i)->push_back(make_tuple(j, weight));
             }
         }
     }
