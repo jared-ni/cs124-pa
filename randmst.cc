@@ -124,9 +124,9 @@ void construct_graph0(int n, vector<tuple<int, float>>* vList) {
             (*(vList + i)).push_back(make_tuple(j, randnum));
               (vList + j)->push_back(make_tuple(i, randnum));
         }
-        // if (i % 1000 == 0) {
-        //     cout << "i: " << i << endl;
-        // }
+        if (i % 1000 == 0) {
+            cout << "i: " << i << endl;
+        }
     }
 }
 
