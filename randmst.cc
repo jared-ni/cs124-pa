@@ -105,29 +105,6 @@ float prim(vector<tuple<int, float>>* graph, int n)
     return total_weight;
 }
 
-// randomizes vertices for dimension 3
-unordered_map<int, vector<tuple<float, float, float>>> vertex_dict3(int n)
-{
-    unordered_map<int, vector<tuple<float, float, float>>> vertices;
-    for (int i = 0; i < n; i++)
-    {
-        vertices[i] = vector<tuple<float, float, float>>();
-        vertices[i].push_back(make_tuple(rand_num(), rand_num(), rand_num()));
-    }
-    return vertices;
-}
-
-// randomizes vertices for dimension 4
-unordered_map<int, vector<tuple<float, float, float, float>>> vertex_dict4(int n)
-{
-    unordered_map<int, vector<tuple<float, float, float, float>>> vertices;
-    for (int i = 0; i < n; i++)
-    {
-        vertices[i] = vector<tuple<float, float, float, float>>();
-        vertices[i].push_back(make_tuple(rand_num(), rand_num(), rand_num(), rand_num()));
-    }
-    return vertices;
-}
 
 // returns random number between 0 and 1
 float rand_num()
