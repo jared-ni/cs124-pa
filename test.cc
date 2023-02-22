@@ -254,7 +254,7 @@ void construct_graph4(int n, vector<tuple<int, float>> *vList)
                                     pow(get<2>(coordinates[i]) - get<2>(coordinates[j]), 2) +
                                     pow(get<3>(coordinates[i]) - get<3>(coordinates[j]), 2));
                 // this check is only accurate for n > 100
-                if ((n <= 100) || (n > 100 && weight < 0.8))
+                if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.8) || (n >= 1000 && n < 10000 && weight < 0.5) || (n >= 10000 && weight < 0.3))
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
                 }
