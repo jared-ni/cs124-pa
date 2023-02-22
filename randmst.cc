@@ -82,15 +82,18 @@ void dimension_trial(int n, int dimensions)
 
     auto stop = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
-    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << duration.count() << " ms" << endl;
-
+    // cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << duration.count() << " ms" << endl;
+    cout << "Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << duration.count() << " ms" << endl;
+    
     start = chrono::high_resolution_clock::now();
     float total_weight = prim(graph, n, graphSize);
     stop = chrono::high_resolution_clock::now();
-    duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
-    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
 
-    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
+    duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+    // cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
+    cout << "Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
+    
+    cout << "\nThread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
 }
 
 // use Prim's Algorithm to find minimum spanning tree using our minHeap
