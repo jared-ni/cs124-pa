@@ -11,6 +11,7 @@
 #include <ctime>
 #include <thread>
 
+
 using namespace std;
 
 // make graph a pointer and not return it
@@ -22,6 +23,8 @@ float prim(vector<tuple<int, float>> *graph, int n, int graphSize);
 float rand_num();
 
 void dimension_trial(int n, int dimensions);
+
+void sum_thread(float* cur_sum, int i, float c_i, float c_j);
 
 // ./randmst 0 numpoints numtrials dimension
 int main(int argc, char *argv[])
@@ -251,6 +254,13 @@ int construct_graph3(int n, vector<tuple<int, float>> *vList)
     return c;
 }
 
+
+// function to calculate the sum of one distance
+void sum_thread(float* cur_sum, int i, float c_i, float c_j)
+{
+    *(cur_sum+i) = pow(c_i - c_j, 2);
+}
+
 // construct graph for dimension 4 with n nodes
 int construct_graph4(int n, vector<tuple<int, float>> *vList)
 {
@@ -270,10 +280,23 @@ int construct_graph4(int n, vector<tuple<int, float>> *vList)
             // add edge to vList
             if (i != j)
             {
+                // float sum[4];
+                // float *cur_sum = sum;
+                // thread threads[4];
+                // for (int i = 0; i < 4; i++) 
+                // {
+                //     threads[i] = thread(sum_thread, cur_sum, i, get<0>(coordinates[i]), get<0>(coordinates[j]));
+                // }
+                // for (int i = 0; i < 4; i++) 
+                // {
+                //     threads[i].join();
+                // }
+                // float weight = sqrt(sum[0] + sum[1] + sum[2] + sum[3]);
                 float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) +
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2) +
                                     pow(get<2>(coordinates[i]) - get<2>(coordinates[j]), 2) +
                                     pow(get<3>(coordinates[i]) - get<3>(coordinates[j]), 2));
+
                 // edge pruning
                 if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.8) || (n >= 1000 && n < 10000 && weight < 0.5) || (n >= 10000 && weight < 0.3))
                 {
