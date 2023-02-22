@@ -92,7 +92,7 @@ void dimension_trial(int n, int dimensions)
     duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
     // cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
     cout << "Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
-    
+
     cout << "\nThread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
 }
 
@@ -177,12 +177,11 @@ int construct_graph2(int n, vector<tuple<int, float>> *vList)
 {
     int c = 0;
     // get coordinates
-    tuple<float, float> coordinates[n];
+    vector<tuple<float, float>> coordinates;
+
     for (int i = 0; i < n; i++)
     {
-        float a = rand_num();
-        float b = rand_num();
-        coordinates[i] = make_tuple(a, b);
+        coordinates.push_back(make_tuple(rand_num(), rand_num()));
     }
     // loop through all nodes
     for (int i = 0; i < n; i++)
@@ -217,13 +216,10 @@ int construct_graph3(int n, vector<tuple<int, float>> *vList)
 {
     int c = 0;
     // get coordinates
-    tuple<float, float, float> coordinates[n];
+    vector<tuple<float, float, float>> coordinates;
     for (int i = 0; i < n; i++)
     {
-        float a = rand_num();
-        float b = rand_num();
-        float c = rand_num();
-        coordinates[i] = make_tuple(a, b, c);
+        coordinates.push_back(make_tuple(rand_num(), rand_num(), rand_num()));
     }
     // loop through all nodes
     for (int i = 0; i < n; i++)
@@ -255,14 +251,10 @@ int construct_graph4(int n, vector<tuple<int, float>> *vList)
 {
     int c = 0;
     // get coordinates
-    tuple<float, float, float, float> coordinates[n];
+    vector<tuple<float, float, float, float>> coordinates;
     for (int i = 0; i < n; i++)
     {
-        float a = rand_num();
-        float b = rand_num();
-        float c = rand_num();
-        float d = rand_num();
-        coordinates[i] = make_tuple(a, b, c, d);
+        coordinates.push_back(make_tuple(rand_num(), rand_num(), rand_num(), rand_num()));
     }
     // loop through all nodes
     for (int i = 0; i < n; i++)
