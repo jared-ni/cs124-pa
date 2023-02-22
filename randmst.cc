@@ -23,6 +23,7 @@ float prim(vector<tuple<int, float>> *graph, int n, int graphSize);
 float rand_num();
 
 void dimension_trial(int n, int dimensions);
+void one_iteration_trials(int dimensions);
 
 void sum_thread(float* cur_sum, int i, float c_i, float c_j);
 
@@ -37,14 +38,29 @@ int main(int argc, char *argv[])
     int dimension = atoi(argv[4]);
 
     srand(static_cast<unsigned>(time(0)));
-    // construct graph dimension 0
-    dimension_trial(numpoints, dimension);
+    
+    // run trials
+    for (int i = 0; i < numtrials; i++)
+    {
+        for (int n = 65536; n <= 262144; n *= 2)
+            dimension_trial(n, 4);
+    }
 
-    // std::thread dimension_thread1(dimension_trial, numtrials, 0);
-    // dimension_thread1.join();
+    // std::thread trial_thread0(one_iteration_trials, 0);
+    // std::thread trial_thread2(one_iteration_trials, 0);
+    // std::thread trial_thread3(one_iteration_trials, 0);
+    // std::thread trial_thread4(one_iteration_trials, 0);
+    // std::thread trial_thread5(one_iteration_trials, 0);
+
+    // trial_thread0.join();
+    // trial_thread2.join();
+    // trial_thread3.join();
+    // trial_thread4.join();
+    // trial_thread5.join();
 
     return 0;
 }
+
 
 // runs all n for one dimension for one iteration
 void one_iteration_trials(int dimensions)
@@ -85,16 +101,16 @@ void dimension_trial(int n, int dimensions)
 
     auto stop = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
-    // cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << duration.count() << " ms" << endl;
-    cout << "Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << duration.count() << " ms" << endl;
+    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << duration.count() << " ms" << endl;
+    // cout << "Dimension: " << dimensions << ", n: " << n << ", graph construction time: " << duration.count() << " ms" << endl;
 
     start = chrono::high_resolution_clock::now();
     float total_weight = prim(graph, n, graphSize);
     stop = chrono::high_resolution_clock::now();
 
     duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
-    // cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
-    cout << "Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
+    cout << "Thread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
+    // cout << "Dimension: " << dimensions << ", n: " << n << ", MST construction time: " << duration.count() << " ms" << endl;
 
     cout << "\nThread[" << this_thread::get_id() << "]: Dimension: " << dimensions << ", n: " << n << ", total weight: " << total_weight << endl;
 }
@@ -168,10 +184,6 @@ int construct_graph0(int n, vector<tuple<int, float>> *vList)
                 c++;
             }
         }
-        if (i % 1000 == 0)
-        {
-            cout << "i: " << i << endl;
-        }
     }
     return c;
 }
@@ -206,10 +218,6 @@ int construct_graph2(int n, vector<tuple<int, float>> *vList)
                     c++;
                 }
             }
-        }
-        if (i % 1000 == 0)
-        {
-            cout << "i: " << i << endl;
         }
     }
     return c;
@@ -246,10 +254,6 @@ int construct_graph3(int n, vector<tuple<int, float>> *vList)
                 }
             }
         }
-        if (i % 1000 == 0)
-        {
-            cout << "i: " << i << endl;
-        }
     }
     return c;
 }
@@ -279,18 +283,7 @@ int construct_graph4(int n, vector<tuple<int, float>> *vList)
         {
             // add edge to vList
             if (i != j)
-            {
-                // float sum[4];
-                // float *cur_sum = sum;
-                // thread threads[4];
-                // for (int i = 0; i < 4; i++) 
-                // {
-                //     threads[i] = thread(sum_thread, cur_sum, i, get<0>(coordinates[i]), get<0>(coordinates[j]));
-                // }
-                // for (int i = 0; i < 4; i++) 
-                // {
-                //     threads[i].join();
-                // }
+            {              
                 // float weight = sqrt(sum[0] + sum[1] + sum[2] + sum[3]);
                 float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) +
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2) +
@@ -305,10 +298,6 @@ int construct_graph4(int n, vector<tuple<int, float>> *vList)
                     c++;
                 }
             }
-        }
-        if (i % 1000 == 0)
-        {
-            cout << "i: " << i << endl;
         }
     }
     return c;
