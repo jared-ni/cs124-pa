@@ -157,6 +157,7 @@ int construct_graph0(int n, vector<tuple<int, float>> *vList)
         {
             // add edge to vList
             float randnum = rand_num();
+            // edge pruning
             if ((n <= 100) || (n > 100 && n < 1000 && randnum < 0.2) || (n >= 1000 && n < 10000 && randnum < 0.1) || (n >= 10000 && randnum < 0.01))
             {
                 (*(vList + i)).push_back(make_tuple(j, randnum));
@@ -194,7 +195,7 @@ int construct_graph2(int n, vector<tuple<int, float>> *vList)
             {
                 float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) +
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2));
-                // this check is only accurate for n >= 100
+                // edge pruning
                 if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.4) || (n >= 1000 && n < 10000 && weight < 0.1) || (n >= 10000 && weight < 0.05))
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
@@ -233,8 +234,8 @@ int construct_graph3(int n, vector<tuple<int, float>> *vList)
                 float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) +
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2) +
                                     pow(get<2>(coordinates[i]) - get<2>(coordinates[j]), 2));
-                // this check is only accurate for n > 100
-                if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.6) || (n >= 1000 && weight < 0.3) || (n >= 10000 && weight < 0.1))
+                // edge pruning
+                if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.6) || (n >= 1000 && n < 10000 && weight < 0.3) || (n >= 10000 && weight < 0.1))
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
                     (vList + j)->push_back(make_tuple(i, weight));
@@ -273,7 +274,7 @@ int construct_graph4(int n, vector<tuple<int, float>> *vList)
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2) +
                                     pow(get<2>(coordinates[i]) - get<2>(coordinates[j]), 2) +
                                     pow(get<3>(coordinates[i]) - get<3>(coordinates[j]), 2));
-                // this check is only accurate for n > 100
+                // edge prunign
                 if (n <= 100 || weight < 0.8)
                 {
                     (vList + i)->push_back(make_tuple(j, weight));
