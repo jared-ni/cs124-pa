@@ -1,237 +1,225 @@
-i: 0
-i: 0
-i: 0
-i: 0
-i: 0
-Thread[0x16d79f000]: Dimension: 0, n: 128, graph construction time: 1 ms
-starting Prim on graph size 1638
-Thread[0x16d5fb000]: Dimension: 0, n: 128, graph construction time: 1 ms
-starting Prim on graph size 1635
-Thread[0x16d713000]: Dimension: Thread[0, n: 128, graph construction time: 1 ms
-starting Prim on graph size 1611
-Thread[0x16d56f000]: Dimension: 0, n: 128, graph construction time: 1 ms
-starting Prim on graph size 1630
-0x16d687000]: Dimension: 0, n: 128, graph construction time: 1 ms
-starting Prim on graph size 1562
-Thread[0x16d79f000]: Dimension: 0, n: 128, MST construction time: 1 ms
+Thread[0x103014580]: Dimension: 0, n: 128, graph construction time: 0 ms
+starting Prim on graph size 1668
+Thread[0x103014580]: Dimension: 0, n: 128, MST construction time: 0 ms
 
-Thread[0x16d79f000]: Dimension: 0, n: 128, total weight: 1.02791
-i: 0
-Thread[0x16d5fb000]: Dimension: 0, n: 128, MST construction time: 1 ms
+Thread[0x103014580]: Dimension: 0, n: 128, total weight: 1.36145
+Thread[0x103014580]: Dimension: 0, n: 256, graph construction time: 1 ms
+starting Prim on graph size 6477
+Thread[0x103014580]: Dimension: 0, n: 256, MST construction time: 1 ms
 
-Thread[0x16d5fb000]: Dimension: 0, n: 128, total weight: 1.0553
-i: 0
-Thread[0x16d713000]: Dimension: 0, n: 128, MST construction time: 1 ms
+Thread[0x103014580]: Dimension: 0, n: 256, total weight: 1.15826
+Thread[0x103014580]: Dimension: 0, n: 512, graph construction time: 4 ms
+starting Prim on graph size 26154
+Thread[0x103014580]: Dimension: 0, n: 512, MST construction time: 4 ms
 
-Thread[0x16d713000]: Dimension: 0, n: 128, total weight: 1.08422
-i: 0
-Thread[0x16d56f000]: Dimension: 0, n: 128, MST construction time: 1 ms
+Thread[0x103014580]: Dimension: 0, n: 512, total weight: 1.101
+Thread[0x103014580]: Dimension: 0, n: 1024, graph construction time: 10 ms
+starting Prim on graph size 52690
+Thread[0x103014580]: Dimension: 0, n: 1024, MST construction time: 9 ms
 
-Thread[0x16d56f000]: Dimension: 0, n: 128, total weight: 1.26303
-i: 0
-Thread[0x16d687000]: Dimension: 0, n: 128, MST construction time: 1 ms
+Thread[0x103014580]: Dimension: 0, n: 1024, total weight: 1.17814
+Thread[0x103014580]: Dimension: 0, n: 2048, graph construction time: 37 ms
+starting Prim on graph size 209676
+Thread[0x103014580]: Dimension: 0, n: 2048, MST construction time: 30 ms
 
-Thread[0x16d687000]: Dimension: 0, n: 128, total weight: 1.07129
-i: 0
-Thread[0x16d79f000]: Dimension: 0, n: 256, graph construction time: 3 ms
-starting Prim on graph size 6543
-Thread[0x16d5fb000]: Dimension: 0, n: 256, graph construction time: 3 ms
-starting Prim on graph size 6581
-Thread[0x16d713000]: Dimension: 0, n: 256, graph construction time: 3 ms
-starting Prim on graph size 6564
-Thread[0x16d56f000]: Dimension: 0, n: 256, graph construction time: 3 ms
-starting Prim on graph size 6501
-Thread[0x16d687000]: Dimension: 0, n: 256, graph construction time: 3 ms
-starting Prim on graph size 6532
-Thread[0x16d5fb000]: Dimension: 0, n: 256, MST construction time: 2 ms
+Thread[0x103014580]: Dimension: 0, n: 2048, total weight: 1.23597
+Thread[0x103014580]: Dimension: 0, n: 4096, graph construction time: 142 ms
+starting Prim on graph size 839673
+Thread[0x103014580]: Dimension: 0, n: 4096, MST construction time: 118 ms
 
-Thread[0x16d5fb000]: Dimension: 0, n: 256, total weight: 1.30576
-Thread[0x16d713000]: Dimension: 0, n: 256, MST construction time: 2 ms
+Thread[0x103014580]: Dimension: 0, n: 4096, total weight: 1.21722
+Thread[0x103014580]: Dimension: 0, n: 8192, graph construction time: 568 ms
+starting Prim on graph size 3352194
+Thread[0x103014580]: Dimension: 0, n: 8192, MST construction time: 460 ms
 
-Thread[0x16d713000]: Dimension: 0, n: 256, total weight: 1.27346
-i: 0
-Thread[0x16d56f000]: Dimension: 0, n: 256, MST construction time: 2 ms
+Thread[0x103014580]: Dimension: 0, n: 8192, total weight: 1.19418
+Thread[0x103014580]: Dimension: 0, n: 16384, graph construction time: 1117 ms
+starting Prim on graph size 1341411
+Thread[0x103014580]: Dimension: 0, n: 16384, MST construction time: 238 ms
 
-Thread[0x16d56f000]: Dimension: 0, n: 256, total weight: 1.2184
-i: 0
-Thread[0x16d687000]: Dimension: 0, n: 256, MST construction time: 2 ms
+Thread[0x103014580]: Dimension: 0, n: 16384, total weight: 1.20786
+Thread[0x103014580]: Dimension: 0, n: 32768, graph construction time: 4420 ms
+starting Prim on graph size 5369883
+Thread[0x103014580]: Dimension: 0, n: 32768, MST construction time: 857 ms
 
-Thread[0x16d687000]: Dimension: 0, n: 256, total weight: 1.13242
-i: 0
-i: 0
-Thread[0x16d79f000]: Dimension: 0, n: 256, MST construction time: 4 ms
+Thread[0x103014580]: Dimension: 0, n: 32768, total weight: 1.19974
+Thread[0x103014580]: Dimension: 0, n: 128, graph construction time: 0 ms
+starting Prim on graph size 1658
+Thread[0x103014580]: Dimension: 0, n: 128, MST construction time: 0 ms
 
-Thread[0x16d79f000]: Dimension: 0, n: 256, total weight: 1.27592
-i: 0
-Thread[0x16d5fb000]: Dimension: 0, n: 512, graph construction time: 9 ms
-starting Prim on graph size 26498
-Thread[0x16d713000]: Dimension: 0, n: 512, graph construction time: 9 ms
-starting Prim on graph size 26751
-Thread[0x16d687000]: Dimension: 0, n: 512, graph construction time: 9 ms
-starting Prim on graph size 26747
-Thread[0x16d56f000]: Dimension: 0, n: 512, graph construction time: 9 ms
-starting Prim on graph size 26739
-Thread[0x16d79f000]: Dimension: 0, n: 512, graph construction time: 9 ms
-starting Prim on graph size 26429
-Thread[0x16d5fb000]: Dimension: 0, n: 512, MST construction time: 5 ms
+Thread[0x103014580]: Dimension: 0, n: 128, total weight: 0.929562
+Thread[0x103014580]: Dimension: 0, n: 256, graph construction time: 1 ms
+starting Prim on graph size 6575
+Thread[0x103014580]: Dimension: 0, n: 256, MST construction time: 1 ms
 
-Thread[0x16d5fb000]: Dimension: 0, n: 512, total weight: 1.14434
-Thread[0x16d713000]: Dimension: 0, n: 512, MST construction time: 5 ms
+Thread[0x103014580]: Dimension: 0, n: 256, total weight: 1.15871
+Thread[0x103014580]: Dimension: 0, n: 512, graph construction time: 4 ms
+starting Prim on graph size 26051
+Thread[0x103014580]: Dimension: 0, n: 512, MST construction time: 4 ms
 
-Thread[0x16d713000]: Dimension: 0, n: 512, total weight: 1.21407
-Thread[0x16d687000]: Dimension: 0, n: 512, MST construction time: 5 ms
+Thread[0x103014580]: Dimension: 0, n: 512, total weight: 1.26289
+Thread[0x103014580]: Dimension: 0, n: 1024, graph construction time: 10 ms
+starting Prim on graph size 52160
+Thread[0x103014580]: Dimension: 0, n: 1024, MST construction time: 8 ms
 
-Thread[0x16d687000]: Dimension: 0, n: 512, total weight: 1.10846
-Thread[0x16d56f000]: Dimension: 0, n: 512, MST construction time: 5 ms
+Thread[0x103014580]: Dimension: 0, n: 1024, total weight: 1.24891
+Thread[0x103014580]: Dimension: 0, n: 2048, graph construction time: 37 ms
+starting Prim on graph size 209608
+Thread[0x103014580]: Dimension: 0, n: 2048, MST construction time: 31 ms
 
-Thread[0x16d56f000]: Dimension: 0, n: 512, total weight: 1.10352
-i: 0
-i: 0
-i: 0
-i: 0
-Thread[0x16d79f000]: Dimension: 0, n: 512, MST construction time: 5 ms
+Thread[0x103014580]: Dimension: 0, n: 2048, total weight: 1.20478
+Thread[0x103014580]: Dimension: 0, n: 4096, graph construction time: 142 ms
+starting Prim on graph size 839066
+Thread[0x103014580]: Dimension: 0, n: 4096, MST construction time: 114 ms
 
-Thread[0x16d79f000]: Dimension: 0, n: 512, total weight: 1.19188
-i: 0
-Thread[0x16d687000]: Dimension: 0, n: 1024, graph construction time: 17 ms
-starting Prim on graph size 54293
-Thread[0x16d713000]: Dimension: 0, n: 1024, graph construction time: 17 ms
-starting Prim on graph size 54448
-Thread[0x16d5fb000]: Dimension: 0, n: 1024, graph construction time: 17 ms
-starting Prim on graph size 53615
-Thread[0x16d56f000]: Dimension: 0, n: 1024, graph construction time: 17 ms
-starting Prim on graph size 53802
-Thread[0x16d79f000]: Dimension: 0, n: 1024, graph construction time: 17 ms
-starting Prim on graph size 53645
-Thread[0x16d713000]: Dimension: 0, n: 1024, MST construction time: 11 ms
+Thread[0x103014580]: Dimension: 0, n: 4096, total weight: 1.21434
+Thread[0x103014580]: Dimension: 0, n: 8192, graph construction time: 553 ms
+starting Prim on graph size 3353362
+Thread[0x103014580]: Dimension: 0, n: 8192, MST construction time: 457 ms
 
-Thread[0x16d713000]: Dimension: 0, n: 1024, total weight: 1.10553
-Thread[0x16d687000]: Dimension: 0, n: 1024, MST construction time: 12 ms
+Thread[0x103014580]: Dimension: 0, n: 8192, total weight: 1.19642
+Thread[0x103014580]: Dimension: 0, n: 16384, graph construction time: 1113 ms
+starting Prim on graph size 1342728
+Thread[0x103014580]: Dimension: 0, n: 16384, MST construction time: 240 ms
 
-Thread[0x16d687000]: Dimension: 0, n: 1024, total weight: 1.15071
-Thread[0x16d5fb000]: Dimension: 0, n: 1024, MST construction time: 11 ms
+Thread[0x103014580]: Dimension: 0, n: 16384, total weight: 1.20168
+Thread[0x103014580]: Dimension: 0, n: 32768, graph construction time: 4639 ms
+starting Prim on graph size 5369239
+Thread[0x103014580]: Dimension: 0, n: 32768, MST construction time: 923 ms
 
-Thread[0x16d5fb000]: Dimension: 0, n: 1024, total weight: 1.17617
-Thread[0x16d56f000]: Dimension: 0, n: 1024, MST construction time: 11 ms
+Thread[0x103014580]: Dimension: 0, n: 32768, total weight: 1.20397
+Thread[0x103014580]: Dimension: 0, n: 128, graph construction time: 0 ms
+starting Prim on graph size 1651
+Thread[0x103014580]: Dimension: 0, n: 128, MST construction time: 0 ms
 
-Thread[0x16d56f000]: Dimension: 0, n: 1024, total weight: 1.09333
-i: 0
-i: 0
-i: 0
-Thread[0x16d79f000]: Dimension: 0, n: 1024, MST construction time: 11 ms
+Thread[0x103014580]: Dimension: 0, n: 128, total weight: 1.18525
+Thread[0x103014580]: Dimension: 0, n: 256, graph construction time: 1 ms
+starting Prim on graph size 6642
+Thread[0x103014580]: Dimension: 0, n: 256, MST construction time: 1 ms
 
-Thread[0x16d79f000]: Dimension: 0, n: 1024, total weight: 1.1178
-i: 0
-i: 0
-Thread[0x16d687000]: Dimension: 0, n: 2048, graph construction time: 65 ms
-starting Prim on graph size 216643
-Thread[0x16d79f000]: Dimension: 0, n: 2048, graph construction time: 64 ms
-starting Prim on graph size 215938
-Thread[0x16d713000]: Dimension: 0, n: 2048, graph construction time: 66 ms
-starting Prim on graph size 214452
-Thread[0x16d5fb000]: Dimension: 0, n: 2048, graph construction time: 66 ms
-starting Prim on graph size 214095
-Thread[0x16d56f000]: Dimension: 0, n: 2048, graph construction time: 66 ms
-starting Prim on graph size 214221
-Thread[0x16d687000]: Dimension: 0, n: 2048, MST construction time: 41 ms
+Thread[0x103014580]: Dimension: 0, n: 256, total weight: 1.1506
+Thread[0x103014580]: Dimension: 0, n: 512, graph construction time: 4 ms
+starting Prim on graph size 26120
+Thread[0x103014580]: Dimension: 0, n: 512, MST construction time: 4 ms
 
-Thread[0x16d687000]: Dimension: 0, n: 2048, total weight: 1.14385
-Thread[0x16d713000]: Dimension: 0, n: 2048, MST construction time: 41 ms
+Thread[0x103014580]: Dimension: 0, n: 512, total weight: 1.34581
+Thread[0x103014580]: Dimension: 0, n: 1024, graph construction time: 11 ms
+starting Prim on graph size 52521
+Thread[0x103014580]: Dimension: 0, n: 1024, MST construction time: 9 ms
 
-Thread[0x16d713000]: Dimension: 0, n: 2048, total weight: 1.15292
-Thread[0x16d5fb000]: Dimension: 0, n: 2048, MST construction time: 41 ms
+Thread[0x103014580]: Dimension: 0, n: 1024, total weight: 1.12179
+Thread[0x103014580]: Dimension: 0, n: 2048, graph construction time: 39 ms
+starting Prim on graph size 208709
+Thread[0x103014580]: Dimension: 0, n: 2048, MST construction time: 32 ms
 
-Thread[0x16d5fb000]: Dimension: 0, n: 2048, total weight: 1.18092
-Thread[0x16d79f000]: Dimension: 0, n: 2048, MST construction time: 42 ms
+Thread[0x103014580]: Dimension: 0, n: 2048, total weight: 1.22243
+Thread[0x103014580]: Dimension: 0, n: 4096, graph construction time: 149 ms
+starting Prim on graph size 837928
+Thread[0x103014580]: Dimension: 0, n: 4096, MST construction time: 126 ms
 
-Thread[0x16d79f000]: Dimension: 0, n: 2048, total weight: 1.13476
-Thread[0x16d56f000]: Dimension: 0, n: 2048, MST construction time: 41 ms
+Thread[0x103014580]: Dimension: 0, n: 4096, total weight: 1.19798
+Thread[0x103014580]: Dimension: 0, n: 8192, graph construction time: 578 ms
+starting Prim on graph size 3355827
+Thread[0x103014580]: Dimension: 0, n: 8192, MST construction time: 481 ms
 
-Thread[0x16d56f000]: Dimension: 0, n: 2048, total weight: 1.13359
-i: 0
-i: 0
-i: 0
-i: 0
-i: 0
-Thread[0x16d687000]: Dimension: 0, n: 4096, graph construction time: 244 ms
-starting Prim on graph size 865907
-Thread[0x16d713000]: Dimension: 0, n: 4096, graph construction time: 245 ms
-starting Prim on graph size 866481
-Thread[0x16d79f000]: Dimension: 0, n: 4096, graph construction time: 251 ms
-starting Prim on graph size 854453
-Thread[0x16d5fb000]: Dimension: 0, n: 4096, graph construction time: 252 ms
-starting Prim on graph size 855087
-Thread[0x16d56f000]: Dimension: 0, n: 4096, graph construction time: 252 ms
-starting Prim on graph size 854344
-Thread[0x16d713000]: Dimension: 0, n: 4096, MST construction time: 154 ms
+Thread[0x103014580]: Dimension: 0, n: 8192, total weight: 1.1905
+Thread[0x103014580]: Dimension: 0, n: 16384, graph construction time: 1173 ms
+starting Prim on graph size 1339787
+Thread[0x103014580]: Dimension: 0, n: 16384, MST construction time: 260 ms
 
-Thread[0x16d713000]: Dimension: 0, n: 4096, total weight: 1.20318
-Thread[0x16d687000]: Dimension: 0, n: 4096, MST construction time: 157 ms
+Thread[0x103014580]: Dimension: 0, n: 16384, total weight: 1.21524
+Thread[0x103014580]: Dimension: 0, n: 32768, graph construction time: 4412 ms
+starting Prim on graph size 5369295
+Thread[0x103014580]: Dimension: 0, n: 32768, MST construction time: 866 ms
 
-Thread[0x16d687000]: Dimension: 0, n: 4096, total weight: 1.1927
-Thread[0x16d56f000]: Dimension: 0, n: 4096, MST construction time: 153 ms
+Thread[0x103014580]: Dimension: 0, n: 32768, total weight: 1.2028
+Thread[0x103014580]: Dimension: 0, n: 128, graph construction time: 0 ms
+starting Prim on graph size 1590
+Thread[0x103014580]: Dimension: 0, n: 128, MST construction time: 0 ms
 
-Thread[0x16d56f000]: Dimension: 0, n: 4096, total weight: 1.20205
-Thread[0x16d79f000]: Dimension: 0, n: 4096, MST construction time: 155 ms
+Thread[0x103014580]: Dimension: 0, n: 128, total weight: 1.30371
+Thread[0x103014580]: Dimension: 0, n: 256, graph construction time: 1 ms
+starting Prim on graph size 6467
+Thread[0x103014580]: Dimension: 0, n: 256, MST construction time: 1 ms
 
-Thread[0x16d79f000]: Dimension: 0, n: 4096, total weight: 1.21423
-Thread[0x16d5fb000]: Dimension: 0, n: 4096, MST construction time: 155 ms
+Thread[0x103014580]: Dimension: 0, n: 256, total weight: 1.13727
+Thread[0x103014580]: Dimension: 0, n: 512, graph construction time: 4 ms
+starting Prim on graph size 25999
+Thread[0x103014580]: Dimension: 0, n: 512, MST construction time: 4 ms
 
-Thread[0x16d5fb000]: Dimension: 0, n: 4096, total weight: 1.19696
-i: 0
-i: 0
-i: 0
-i: 0
-i: 0
-Thread[0x16d687000]: Dimension: 0, n: 8192, graph construction time: 968 ms
-starting Prim on graph size 3451923
-Thread[0x16d56f000]: Dimension: 0, n: 8192, graph construction time: 973 ms
-starting Prim on graph size 3450732
-Thread[0x16d79f000]: Dimension: 0, n: 8192, graph construction time: 979 ms
-starting Prim on graph size 3444439
-Thread[0x16d713000]: Dimension: 0, n: 8192, graph construction time: 988 ms
-starting Prim on graph size 3430963
-Thread[0x16d5fb000]: Dimension: 0, n: 8192, graph construction time: 984 ms
-starting Prim on graph size 3437175
-Thread[0x16d687000]: Dimension: 0, n: 8192, MST construction time: 631 ms
+Thread[0x103014580]: Dimension: 0, n: 512, total weight: 1.16327
+Thread[0x103014580]: Dimension: 0, n: 1024, graph construction time: 10 ms
+starting Prim on graph size 52721
+Thread[0x103014580]: Dimension: 0, n: 1024, MST construction time: 9 ms
 
-Thread[0x16d687000]: Dimension: 0, n: 8192, total weight: 1.17783
-Thread[0x16d56f000]: Dimension: 0, n: 8192, MST construction time: 627 ms
+Thread[0x103014580]: Dimension: 0, n: 1024, total weight: 1.13401
+Thread[0x103014580]: Dimension: 0, n: 2048, graph construction time: 37 ms
+starting Prim on graph size 209591
+Thread[0x103014580]: Dimension: 0, n: 2048, MST construction time: 31 ms
 
-Thread[0x16d56f000]: Dimension: 0, n: 8192, total weight: 1.18514
-Thread[0x16d79f000]: Dimension: 0, n: 8192, MST construction time: 630 ms
+Thread[0x103014580]: Dimension: 0, n: 2048, total weight: 1.22157
+Thread[0x103014580]: Dimension: 0, n: 4096, graph construction time: 144 ms
+starting Prim on graph size 839746
+Thread[0x103014580]: Dimension: 0, n: 4096, MST construction time: 118 ms
 
-Thread[0x16d79f000]: Dimension: 0, n: 8192, total weight: 1.18868
-Thread[0x16d5fb000]: Dimension: 0, n: 8192, MST construction time: 624 ms
+Thread[0x103014580]: Dimension: 0, n: 4096, total weight: 1.21826
+Thread[0x103014580]: Dimension: 0, n: 8192, graph construction time: 574 ms
+starting Prim on graph size 3352283
+Thread[0x103014580]: Dimension: 0, n: 8192, MST construction time: 471 ms
 
-Thread[0x16d5fb000]: Dimension: 0, n: 8192, total weight: 1.19274
-Thread[0x16d713000]: Dimension: 0, n: 8192, MST construction time: 632 ms
+Thread[0x103014580]: Dimension: 0, n: 8192, total weight: 1.19837
+Thread[0x103014580]: Dimension: 0, n: 16384, graph construction time: 1126 ms
+starting Prim on graph size 1341435
+Thread[0x103014580]: Dimension: 0, n: 16384, MST construction time: 243 ms
 
-Thread[0x16d713000]: Dimension: 0, n: 8192, total weight: 1.18294
-i: 0
-i: 0
-i: 0
-i: 0
-i: 0
-Thread[0x16d56f000]: Dimension: 0, n: 16384, graph construction time: 1671 ms
-starting Prim on graph size 1437876
-Thread[0x16d5fb000]: Dimension: 0, n: 16384, graph construction time: 1667 ms
-starting Prim on graph size 1430355
-Thread[0x16d79f000]: Dimension: 0, n: 16384, graph construction time: 1665 ms
-starting Prim on graph size 1438470
-Thread[0x16d687000]: Dimension: 0, n: 16384, graph construction time: 1688 ms
-starting Prim on graph size 1429775
-Thread[0x16d713000]: Dimension: 0, n: 16384, graph construction time: 1688 ms
-starting Prim on graph size 1418485
-Thread[0x16d56f000]: Dimension: 0, n: 16384, MST construction time: 331 ms
+Thread[0x103014580]: Dimension: 0, n: 16384, total weight: 1.21056
+Thread[0x103014580]: Dimension: 0, n: 32768, graph construction time: 4411 ms
+starting Prim on graph size 5369837
+Thread[0x103014580]: Dimension: 0, n: 32768, MST construction time: 853 ms
 
-Thread[0x16d56f000]: Dimension: 0, n: 16384, total weight: 1.14439
-Thread[0x16d79f000]: Dimension: 0, n: 16384, MST construction time: 333 ms
+Thread[0x103014580]: Dimension: 0, n: 32768, total weight: 1.2046
+Thread[0x103014580]: Dimension: 0, n: 128, graph construction time: 0 ms
+starting Prim on graph size 1620
+Thread[0x103014580]: Dimension: 0, n: 128, MST construction time: 0 ms
 
-Thread[0x16d79f000]: Dimension: 0, n: 16384, total weight: 1.14122
-Thread[0x16d5fb000]: Dimension: 0, n: 16384, MST construction time: 335 ms
+Thread[0x103014580]: Dimension: 0, n: 128, total weight: 1.16444
+Thread[0x103014580]: Dimension: 0, n: 256, graph construction time: 1 ms
+starting Prim on graph size 6484
+Thread[0x103014580]: Dimension: 0, n: 256, MST construction time: 1 ms
 
-Thread[0x16d5fb000]: Dimension: 0, n: 16384, total weight: 1.15939
-Thread[0x16d687000]: Dimension: 0, n: 16384, MST construction time: 335 ms
+Thread[0x103014580]: Dimension: 0, n: 256, total weight: 1.30569
+Thread[0x103014580]: Dimension: 0, n: 512, graph construction time: 4 ms
+starting Prim on graph size 26183
+Thread[0x103014580]: Dimension: 0, n: 512, MST construction time: 4 ms
 
-Thread[0x16d687000]: Dimension: 0, n: 16384, total weight: 1.14802
+Thread[0x103014580]: Dimension: 0, n: 512, total weight: 1.19974
+Thread[0x103014580]: Dimension: 0, n: 1024, graph construction time: 10 ms
+starting Prim on graph size 52028
+Thread[0x103014580]: Dimension: 0, n: 1024, MST construction time: 8 ms
+
+Thread[0x103014580]: Dimension: 0, n: 1024, total weight: 1.28493
+Thread[0x103014580]: Dimension: 0, n: 2048, graph construction time: 38 ms
+starting Prim on graph size 209747
+Thread[0x103014580]: Dimension: 0, n: 2048, MST construction time: 31 ms
+
+Thread[0x103014580]: Dimension: 0, n: 2048, total weight: 1.1907
+Thread[0x103014580]: Dimension: 0, n: 4096, graph construction time: 145 ms
+starting Prim on graph size 838924
+Thread[0x103014580]: Dimension: 0, n: 4096, MST construction time: 116 ms
+
+Thread[0x103014580]: Dimension: 0, n: 4096, total weight: 1.19555
+Thread[0x103014580]: Dimension: 0, n: 8192, graph construction time: 556 ms
+starting Prim on graph size 3353276
+Thread[0x103014580]: Dimension: 0, n: 8192, MST construction time: 468 ms
+
+Thread[0x103014580]: Dimension: 0, n: 8192, total weight: 1.21293
+Thread[0x103014580]: Dimension: 0, n: 16384, graph construction time: 1117 ms
+starting Prim on graph size 1342728
+Thread[0x103014580]: Dimension: 0, n: 16384, MST construction time: 244 ms
+
+Thread[0x103014580]: Dimension: 0, n: 16384, total weight: 1.2
+Thread[0x103014580]: Dimension: 0, n: 32768, graph construction time: 4424 ms
+starting Prim on graph size 5369238
+Thread[0x103014580]: Dimension: 0, n: 32768, MST construction time: 862 ms
+
+Thread[0x103014580]: Dimension: 0, n: 32768, total weight: 1.19447

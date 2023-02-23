@@ -11,7 +11,6 @@
 #include <ctime>
 #include <thread>
 
-
 using namespace std;
 
 // make graph a pointer and not return it
@@ -25,7 +24,7 @@ float rand_num();
 void dimension_trial(int n, int dimensions);
 void one_iteration_trials(int dimensions);
 
-void sum_thread(float* cur_sum, int i, float c_i, float c_j);
+void sum_thread(float *cur_sum, int i, float c_i, float c_j);
 
 // ./randmst 0 numpoints numtrials dimension
 int main(int argc, char *argv[])
@@ -38,12 +37,12 @@ int main(int argc, char *argv[])
     int dimension = atoi(argv[4]);
 
     srand(static_cast<unsigned>(time(0)));
-    
+
     // run trials
     for (int i = 0; i < numtrials; i++)
     {
         for (int n = 65536; n <= 262144; n *= 2)
-            dimension_trial(n, 4);
+            dimension_trial(n, 2);
     }
 
     // std::thread trial_thread0(one_iteration_trials, 0);
@@ -60,7 +59,6 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
 
 // runs all n for one dimension for one iteration
 void one_iteration_trials(int dimensions)
@@ -258,11 +256,10 @@ int construct_graph3(int n, vector<tuple<int, float>> *vList)
     return c;
 }
 
-
 // function to calculate the sum of one distance
-void sum_thread(float* cur_sum, int i, float c_i, float c_j)
+void sum_thread(float *cur_sum, int i, float c_i, float c_j)
 {
-    *(cur_sum+i) = pow(c_i - c_j, 2);
+    *(cur_sum + i) = pow(c_i - c_j, 2);
 }
 
 // construct graph for dimension 4 with n nodes
@@ -283,7 +280,7 @@ int construct_graph4(int n, vector<tuple<int, float>> *vList)
         {
             // add edge to vList
             if (i != j)
-            {              
+            {
                 // float weight = sqrt(sum[0] + sum[1] + sum[2] + sum[3]);
                 float weight = sqrt(pow(get<0>(coordinates[i]) - get<0>(coordinates[j]), 2) +
                                     pow(get<1>(coordinates[i]) - get<1>(coordinates[j]), 2) +
