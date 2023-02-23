@@ -77,9 +77,9 @@ float prim2(int n, int dimension)
     int graphSize = n * (n - 1) / 2;
 
     // create coordinates graph
-    vector<tuple<float, float>> coordinates;
+    vector<tuple<float, float>> coordinates2;
     for (int i = 0; i < n; i++)
-        coordinates.push_back(make_tuple(rand_num(), rand_num()));
+        coordinates2.push_back(make_tuple(rand_num(), rand_num()));
 
     set<int> S;
     MinHeap H = MinHeap(graphSize);
@@ -99,7 +99,7 @@ float prim2(int n, int dimension)
         S.insert(get<0>(v));
         // for each neighbor of v
         int i = 0;
-        for (auto& coordinate : coordinates)
+        for (auto& coordinate : coordinates2)
         {
             // if neighbor is v, skip
             if (i == get<0>(v)) {
@@ -108,8 +108,8 @@ float prim2(int n, int dimension)
             }
             // calculate weight of the edge between v and w
             float weight = 100000.0;
-            weight = sqrt(pow(get<0>(coordinate) - get<0>(v), 2) +
-                          pow(get<1>(coordinate) - get<1>(v), 2));
+            weight = sqrt(pow(get<0>(coordinate) - get<0>(coordinates2[get<0>(v)]), 2) +
+                          pow(get<1>(coordinate) - get<1>(coordinates2[get<0>(v)]), 2));
             
             // if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.4) || (n >= 1000 && n < 10000 && weight < 0.1) || (n >= 10000 && weight < 0.05)) 
             // {
@@ -170,9 +170,9 @@ float prim3(int n, int dimension)
             // calculate weight of the edge between v and w
             float weight = 100000.0;
 
-            weight = sqrt(pow(get<0>(coordinate) - get<0>(coordinate), 2) +
-                            pow(get<1>(coordinate) - get<1>(coordinate), 2) +
-                            pow(get<2>(coordinate) - get<2>(coordinate), 2));
+            weight = sqrt(pow(get<0>(coordinate) - get<0>(coordinates3[get<0>(v)]), 2) +
+                          pow(get<1>(coordinate) - get<1>(coordinates3[get<0>(v)]), 2) +
+                          pow(get<2>(coordinate) - get<2>(coordinates3[get<0>(v)]), 2));
 
             if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.6) || (n >= 1000 && n < 10000 && weight < 0.3) || (n >= 10000 && weight < 0.1)) {
                 // if neighbor is not in S, add it to H
@@ -231,10 +231,10 @@ float prim4(int n, int dimension)
             
             // calculate weight of the edge between v and w
             float weight = 100000.0;
-            weight = sqrt(pow(get<0>(coordinate) - get<0>(coordinate), 2) +
-                          pow(get<1>(coordinate) - get<1>(coordinate), 2) +
-                          pow(get<2>(coordinate) - get<2>(coordinate), 2) +
-                          pow(get<3>(coordinate) - get<3>(coordinate), 2));
+            weight = sqrt(pow(get<0>(coordinate) - get<0>(coordinates4[get<0>(v)]), 2) +
+                          pow(get<1>(coordinate) - get<1>(coordinates4[get<0>(v)]), 2) +
+                          pow(get<2>(coordinate) - get<2>(coordinates4[get<0>(v)]), 2) +
+                          pow(get<3>(coordinate) - get<3>(coordinates4[get<0>(v)]), 2));
 
             if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.8) || (n >= 1000 && n < 10000 && weight < 0.5) || (n >= 10000 && weight < 0.3)) {
                 // if neighbor is not in S, add it to H
