@@ -42,34 +42,12 @@ int main(int argc, char *argv[])
     // run trials
     for (int i = 0; i < numtrials; i++)
     {
-        for (int n = 65536; n <= 262144; n *= 2)
-            dimension_trial(n, 4);
+        dimension_trial(numpoints, dimension);
     }
-
-    // std::thread trial_thread0(one_iteration_trials, 0);
-    // std::thread trial_thread2(one_iteration_trials, 0);
-    // std::thread trial_thread3(one_iteration_trials, 0);
-    // std::thread trial_thread4(one_iteration_trials, 0);
-    // std::thread trial_thread5(one_iteration_trials, 0);
-
-    // trial_thread0.join();
-    // trial_thread2.join();
-    // trial_thread3.join();
-    // trial_thread4.join();
-    // trial_thread5.join();
 
     return 0;
 }
 
-
-// runs all n for one dimension for one iteration
-void one_iteration_trials(int dimensions)
-{
-    for (int n = 128; n <= 262144; n *= 2)
-    {
-        dimension_trial(n, dimensions);
-    }
-}
 
 // dimension_trial0
 void dimension_trial(int n, int dimensions)
