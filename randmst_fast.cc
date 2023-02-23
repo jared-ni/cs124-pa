@@ -11,6 +11,13 @@
 #include <ctime>
 #include <thread>
 
+#include <algorithm>
+#include <chrono>
+#include <cstdint>
+#include <execution>
+#include <iostream>
+#include <random>
+#include <vector>
 
 using namespace std;
 
@@ -78,8 +85,15 @@ float prim2(int n, int dimension)
 
     // create coordinates graph
     vector<tuple<float, float>> coordinates2;
+
+    // create coordinates graph
     for (int i = 0; i < n; i++)
-        coordinates2.push_back(make_tuple(rand_num(), rand_num()));
+    {
+        float x = rand_num();
+        float y = rand_num();
+        coordinates2.push_back(make_tuple(x, y));
+    }
+        
 
     set<int> S;
     MinHeap H = MinHeap(graphSize);
@@ -99,21 +113,23 @@ float prim2(int n, int dimension)
         S.insert(get<0>(v));
         // for each neighbor of v
         int i = 0;
+        float coord1 = get<0>(coordinates2[get<0>(v)]);
+        float coord2 = get<1>(coordinates2[get<0>(v)]);
         for (auto& coordinate : coordinates2)
         {
             // if neighbor is v, skip
-            if (i == get<0>(v)) {
+            if (i == get<0>(v) || S.find(i) != S.end()) {
                 i++;
                 continue;
             }
             // calculate weight of the edge between v and w
-            float weight = 100000.0;
-            weight = sqrt(pow(get<0>(coordinate) - get<0>(coordinates2[get<0>(v)]), 2) +
-                          pow(get<1>(coordinate) - get<1>(coordinates2[get<0>(v)]), 2));
+            float weight;
+            weight = sqrt(pow(get<0>(coordinate) - coord1, 2) +
+                          pow(get<1>(coordinate) - coord2, 2));
             
             // if ((n <= 100) || (n > 100 && n < 1000 && weight < 0.4) || (n >= 1000 && n < 10000 && weight < 0.1) || (n >= 10000 && weight < 0.05)) 
             // {
-            if (dist[i] > weight && S.find(i) == S.end())
+            if (dist[i] > weight)
             {
                 dist[i] = weight;
                 H.insert(make_tuple(i, weight));
