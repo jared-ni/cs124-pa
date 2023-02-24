@@ -223,3 +223,78 @@ starting Prim on graph size 13927777
 Thread[0x100984580]: Dimension: 4, n: 32768, MST construction time: 4747 ms
 
 Thread[0x100984580]: Dimension: 4, n: 32768, total weight: 1687.35
+Thread[0x1008e0580]: Dimension: 4, n: 65536, graph construction time: 184751 ms
+starting Prim on graph size 55519224
+Thread[0x1008e0580]: Dimension: 4, n: 65536, MST construction time: 22343 ms
+
+Thread[0x1008e0580]: Dimension: 4, n: 65536, total weight: 2826.21
+Thread[0x1008e0580]: Dimension: 4, n: 65536, graph construction time: 177438 ms
+starting Prim on graph size 55340474
+Thread[0x1008e0580]: Dimension: 4, n: 65536, MST construction time: 20924 ms
+
+Thread[0x1008e0580]: Dimension: 4, n: 65536, total weight: 2829.93
+Thread[0x1008e0580]: Dimension: 4, n: 65536, graph construction time: 180785 ms
+starting Prim on graph size 55526107
+Thread[0x1008e0580]: Dimension: 4, n: 65536, MST construction time: 25944 ms
+
+Thread[0x1008e0580]: Dimension: 4, n: 65536, total weight: 2828.64
+Thread[0x1008e0580]: Dimension: 4, n: 65536, graph construction time: 182379 ms
+starting Prim on graph size 55347264
+Thread[0x1008e0580]: Dimension: 4, n: 65536, MST construction time: 23811 ms
+
+Thread[0x1008e0580]: Dimension: 4, n: 65536, total weight: 2831.59
+Thread[0x1008e0580]: Dimension: 4, n: 65536, graph construction time: 180611 ms
+starting Prim on graph size 55423982
+Thread[0x1008e0580]: Dimension: 4, n: 65536, MST construction time: 20664 ms
+
+Thread[0x1008e0580]: Dimension: 4, n: 65536, total weight: 2830.66
+Thread[0x2086b6500]: Dimension: 4, n: 131072, graph construction time: 2107520 ms
+starting Prim on graph size 222435556
+Thread[0x2086b6500]: Dimension: 4, n: 131072, MST construction time: 199457 ms
+
+Thread[0x2086b6500]: Dimension: 4, n: 131072, total weight: 4746.75
+Thread[0x2086b6500]: Dimension: 4, n: 131072, graph construction time: 1151103 ms
+starting Prim on graph size 222288477
+Thread[0x2086b6500]: Dimension: 4, n: 131072, MST construction time: 251051 ms
+
+Thread[0x2086b6500]: Dimension: 4, n: 131072, total weight: 4737.72
+Thread[0x10458c580]: Dimension: 4, n: 131072, graph construction time: 1004487 ms
+starting Prim on graph size 221836874
+Thread[0x10458c580]: Dimension: 4, n: 131072, MST construction time: 288882 ms
+
+Thread[0x10458c580]: Dimension: 4, n: 131072, total weight: 4742.16
+Thread[0x10458c580]: Dimension: 4, n: 131072, graph construction time: 983658 ms
+starting Prim on graph size 221294895
+Thread[0x10458c580]: Dimension: 4, n: 131072, MST construction time: 452838 ms
+
+Thread[0x10458c580]: Dimension: 4, n: 131072, total weight: 4738.18
+Thread[0x10458c580]: Dimension: 4, n: 131072, graph construction time: 983658 ms
+starting Prim on graph size 221294895
+Thread[0x10458c580]: Dimension: 4, n: 131072, MST construction time: 452838 ms
+
+Thread[0x10458c580]: Dimension: 4, n: 131072, total weight: 4738.18
+Thread[0x2086b6500]: Dimension: 4, n: 262144, graph construction time: 11959413 ms
+starting Prim on graph size 889511213
+Thread[0x2086b6500]: Dimension: 4, n: 262144, MST construction time: 2389431 ms
+
+Thread[0x2086b6500]: Dimension: 4, n: 262144, total weight: 7947.52
+Thread[0x2086b6500]: Dimension: 4, n: 262144, graph construction time: 4403180 ms
+starting Prim on graph size 887701704
+Thread[0x2086b6500]: Dimension: 4, n: 262144, MST construction time: 2052529 ms
+
+Thread[0x2086b6500]: Dimension: 4, n: 262144, total weight: 7948.84
+Thread[0x2086b6500]: Dimension: 4, n: 262144, graph construction time: 5708069 ms
+starting Prim on graph size 887841787
+Thread[0x2086b6500]: Dimension: 4, n: 262144, MST construction time: 6878918 ms
+
+Thread[0x2086b6500]: Dimension: 4, n: 262144, total weight: 7948.77
+Thread[0x2086b6500]: Dimension: 4, n: 262144, graph construction time: 15773653 ms
+starting Prim on graph size 889184224
+Thread[0x2086b6500]: Dimension: 4, n: 262144, MST construction time: 11709719 ms
+
+Thread[0x2086b6500]: Dimension: 4, n: 262144, total weight: 7948.8
+Thread[0x2086b6500]Dimension: 4, n: 262144, graph construction time: 5317099 ms
+starting Prim on graph size 888860535
+Thread[0x2086b6500]: Dimension: 4, n: 262144, MST construction time: 4442959 ms
+
+Thread[0x1050e8580]: Dimension: 4, n: 262144, total weight: 7954.21
