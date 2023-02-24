@@ -10,3 +10,10 @@ Thread[0x2086b6500]: Dimension: 4, n: 262144, MST construction time: 2052529 ms
 Thread[0x2086b6500]: Dimension: 4, n: 262144, total weight: 7948.84
 Thread[0x2086b6500]: Dimension: 4, n: 262144, graph construction time: 5708069 ms
 starting Prim on graph size 887841787
+Thread[0x2086b6500]: Dimension: 4, n: 262144, MST construction time: 6878918 ms
+
+Thread[0x2086b6500]: Dimension: 4, n: 262144, total weight: 7948.77
+Thread[0x2086b6500]: Dimension: 4, n: 262144, graph construction time: 15773653 ms
+starting Prim on graph size 889184224
+Thread[0x2086b6500]: Dimension: 4, n: 262144, MST construction time: 11709719 ms
+Thread[0x2086b6500]: Dimension: 4, n: 262144, total weight: 7948.8
