@@ -260,5 +260,9 @@ void construct_graph4(int n, vector<tuple<int, float>> *vList)
                 }
             }
         }
+        if (i % 1000 == 0)
+        {
+            cout << "i: " << i << endl;
+        }
     }
 }
