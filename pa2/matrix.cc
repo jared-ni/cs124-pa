@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -78,10 +79,13 @@ void init_result_matrix(vector<vector<int>> &matrix, int m, int p)
 // Strassen's matrix multiplication in O(n^2.81). A * B = C
 void strassen_matrix(int **A, int **B, int **C, int m, int n, int p)
 {
-    if (m % 2 != 0 || n % 2 != 0 || p % 2 != 0)
-    {
-        // pad with 0s
-    }
+    pad_matrix(A, B, m, n, p);
+}
+
+void pad_matrix(int **A, int **B, int m, int n, int p)
+{
+    int max_dim = max({m, n, p});
+    int dimension = ceil(log2(max_dim));
 }
 
 // print vector of vectors matrix
