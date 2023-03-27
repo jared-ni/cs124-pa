@@ -25,7 +25,7 @@ void matrix_multiply(vector<vector<int>> &A, vector<vector<int>> &B, vector<vect
 }
 
 // helper addition function for Strassen's
-void add_matrix(int **A, int **B, int **C, int m, int n)
+void add_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int m, int n)
 {
     for (int i = 0; i < m; i++)
     {
@@ -37,7 +37,7 @@ void add_matrix(int **A, int **B, int **C, int m, int n)
 }
 
 // helper subtraction function for Strassen's
-void subtract_matrix(int **A, int **B, int **C, int m, int n)
+void subtract_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int m, int n)
 {
     for (int i = 0; i < m; i++)
     {
@@ -76,16 +76,43 @@ void init_result_matrix(vector<vector<int>> &matrix, int m, int p)
     }
 }
 
-// Strassen's matrix multiplication in O(n^2.81). A * B = C
-void strassen_matrix(int **A, int **B, int **C, int m, int n, int p)
+// pad matrix dimensions to be square and a power of 2
+void pad_matrix(vector<vector<int>> &matrix, int rows, int cols, int dim)
 {
-    pad_matrix(A, B, m, n, p);
+    cout << "rows " << rows << endl;
+    cout << "cols " << cols << endl;
+    cout << "dim " << dim << endl;
+    // pad existing rows
+    for (auto &row : matrix)
+    {
+        for (int r = cols; r < dim; r++)
+        {
+            row.push_back(0);
+        }
+    }
+    // pad by adding more rows
+    for (int i = rows; i < dim; i++)
+    {
+        vector<int> new_row;
+        for (int j = 0; j < dim; j++)
+        {
+            new_row.push_back(0);
+        }
+        matrix.push_back(new_row);
+    }
 }
 
-void pad_matrix(int **A, int **B, int m, int n, int p)
+// Strassen's matrix multiplication in O(n^2.81). A * B = C
+void strassen_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int m, int n, int p)
 {
-    int max_dim = max({m, n, p});
-    int dimension = ceil(log2(max_dim));
+    if (m != n || n != p || m % 2 != 0 || n % 2 != 0)
+    {
+        // calculate target matrix dimension
+        int max_dim = max({m, n, p});
+        int dimension = pow(2, ceil(log2(max_dim)));
+        pad_matrix(A, m, n, dimension);
+        pad_matrix(B, n, p, dimension);
+    }
 }
 
 // print vector of vectors matrix
@@ -126,6 +153,12 @@ int main(void)
     matrix_multiply(matrix, matrix2, result_matrix, 2, 4, 2);
 
     print_matrix(result_matrix);
+
+    strassen_matrix(matrix, matrix2, result_matrix, 2, 4, 2);
+
+    print_matrix(matrix);
+
+    print_matrix(matrix2);
 
     return 0;
 }
