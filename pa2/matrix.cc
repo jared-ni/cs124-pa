@@ -79,9 +79,6 @@ void init_result_matrix(vector<vector<int>> &matrix, int m, int p)
 // pad matrix dimensions to be square and a power of 2
 void pad_matrix(vector<vector<int>> &matrix, int rows, int cols, int dim)
 {
-    cout << "rows " << rows << endl;
-    cout << "cols " << cols << endl;
-    cout << "dim " << dim << endl;
     // pad existing rows
     for (auto &row : matrix)
     {
