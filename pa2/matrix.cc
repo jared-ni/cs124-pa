@@ -102,7 +102,8 @@ void pad_matrix(vector<vector<int>> &matrix, int rows, int cols, int dim)
 // Strassen's matrix multiplication in O(n^2.81). A * B = C
 void strassen_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int m, int n, int p)
 {
-    if (m != n || n != p || m % 2 != 0 || n % 2 != 0)
+    // check if padding is needed
+    if (m != n || n != p || m % 2 != 0)
     {
         // calculate target matrix dimension
         int max_dim = max({m, n, p});
