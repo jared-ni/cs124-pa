@@ -16,12 +16,10 @@ vector<vector<int>> matrix_multiply(vector<vector<int>> &A, vector<vector<int>> 
     int p = B[0].size();
     
     vector<vector<int>> C(m, vector<int>(p));
-
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < p; j++)
         {
-            C[i][j] = 0;
             for (int k = 0; k < n; k++)
             {
                 C[i][j] += A[i][k] * B[k][j];
@@ -80,20 +78,6 @@ void init_matrix(vector<vector<int>> &matrix, int m, int n)
     }
 }
 
-// initialize result matrix with 0s
-void init_result_matrix(vector<vector<int>> &matrix, int m, int p)
-{
-    for (int i = 0; i < m; i++)
-    {
-        vector<int> row;
-        for (int j = 0; j < p; j++)
-        {
-            row.push_back(0);
-        }
-        matrix.push_back(row);
-    }
-}
-
 // pad matrix dimensions to be square and a power of 2
 void pad_matrix(vector<vector<int>> &matrix, int rows, int cols, int dim)
 {
@@ -136,7 +120,7 @@ vector<vector<int>> strassen_matrix(vector<vector<int>> &A, vector<vector<int>> 
     // now we have 2^n x 2^n matrices as A, B, base case for strassen's is 2 x 2
     // base case
     int A_length = A.size();
-    vector<vector<int>> C(m, vector<int>(m));
+    vector<vector<int>> C(A_length, vector<int>(A_length));
     
     if (A_length == 1) {
         C[0][0] = A[0][0] * B[0][0];
@@ -204,10 +188,10 @@ vector<vector<int>> strassen_matrix(vector<vector<int>> &A, vector<vector<int>> 
 
     vector<vector<int>> C3 = add_matrix(p3, p4);
 
-    vector<vector<int>> C41 = add_matrix(p5, p1);
-    vector<vector<int>> C42 = subtract_matrix(C41, p3);
-    vector<vector<int>> C4 = subtract_matrix(C42, p7);
-    
+    vector<vector<int>> C41 = subtract_matrix(p1, p3);
+    vector<vector<int>> C42 = add_matrix(C41, p5);
+    vector<vector<int>> C4 = add_matrix(C42, p7);
+
     // combine submatrices of C into single matrix 
     for (int i = 0; i < half; i++)
     {
@@ -246,7 +230,6 @@ int main(void)
 {
     vector<vector<int>> matrix;
     vector<vector<int>> matrix2;
-    vector<vector<int>> result_matrix;
 
     srand(static_cast<unsigned>(time(0)));
 
@@ -257,25 +240,22 @@ int main(void)
     init_matrix(matrix2, 4, 2);
     cout << "Matrix 2:" << endl;
     print_matrix(matrix2);
-    init_result_matrix(result_matrix, 2, 2);
-    cout << "Result Matrix:" << endl;
-    print_matrix(result_matrix);
 
-    matrix_multiply(matrix, matrix2);
+    vector<vector<int>> result_matrix = matrix_multiply(matrix, matrix2);
     cout << "Correct Result Matrix:" << endl;
     print_matrix(result_matrix);
 
-    // // Strassen's matrix multiplication
-    // vector<vector<int>> strassen_result = strassen_matrix(matrix, matrix2);
+    // Strassen's matrix multiplication
+    vector<vector<int>> strassen_result = strassen_matrix(matrix, matrix2);
 
-    // cout << "Padded matrix 1:" << endl;
-    // print_matrix(matrix);
+    cout << "Padded matrix 1:" << endl;
+    print_matrix(matrix);
 
-    // cout << "Padded matrix 2:" << endl;
-    // print_matrix(matrix2);
+    cout << "Padded matrix 2:" << endl;
+    print_matrix(matrix2);
 
-    // cout << "Strassen's matrix multiplication:" << endl;
-    // print_matrix(strassen_result);
+    cout << "Strassen's matrix multiplication:" << endl;
+    print_matrix(strassen_result);
 
     return 0;
 }
