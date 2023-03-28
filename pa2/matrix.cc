@@ -284,7 +284,8 @@ int calculate_triangles(vector<vector<int>> &G)
 
 
 // part 2 experiment time function
-void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, vector<vector<int> > &result_matrix) {
+void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, 
+               vector<vector<int> > &result_matrix, fstream &fout) {
     for(int i = 2; i < 2048; i*=2) {
         pad_matrix(matrix, i);
         pad_matrix(matrix2, i);
@@ -297,14 +298,16 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, vect
         matrix_multiply(matrix, matrix2, result_matrix);
         std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
         std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
+        // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
+        cout << crosspoint << "," << i<<"x"<<i<< "," << duration.count();
 
         start = chrono::high_resolution_clock::now();
         strassen_matrix(matrix, matrix2, result_matrix, i);
         prune_matrix(result_matrix, i, i);
         end = chrono::high_resolution_clock::now();
         duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
+        cout << "," << duration.count() << endl;
+        // cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
     }
 }
 
@@ -360,14 +363,18 @@ int main(void)
         
         
     // Part 2: Experimentally determine crossover point
+    fstream fout;
+    fout.open("part2.txt", ios::out);
+    fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force Time"<<","<<"Strassen's Time"<<endl;
     while(crosspoint < 90) {
-        cout << "Crossover point: " << crosspoint << endl;
+        // cout << "Crossover point: " << crosspoint << endl;
         vector<vector<int> > matrix;
         vector<vector<int> > matrix2;
         vector<vector<int> > result_matrix;
-        part2loop(matrix, matrix2, result_matrix);
+        part2loop(matrix, matrix2, result_matrix, fout);
         crosspoint += 1;
     }
+    fout.close();
 
     // Part 3: Calculate number of triangles for p = 0.01 through 0.05
     for (int i = 0; i < 5; i++)
