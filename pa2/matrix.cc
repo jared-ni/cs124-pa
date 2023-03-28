@@ -317,6 +317,42 @@ int calculate_triangles(vector<vector<int>> &G)
 }
 
 
+// part 2 experiment time function
+void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, vector<vector<int> > &result_matrix) {
+    for(int i = 2; i < 2048; i*=2) {
+        pad_matrix(matrix, i);
+        pad_matrix(matrix2, i);
+        pad_matrix(result_matrix, i);
+
+        init_matrix(matrix, i, i);
+        init_matrix(matrix2, i, i);
+
+        std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
+        matrix_multiply(matrix, matrix2, result_matrix);
+        std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
+        std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+        cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
+
+        start = chrono::high_resolution_clock::now();
+        strassen_matrix(matrix, matrix2, result_matrix, i);
+        end = chrono::high_resolution_clock::now();
+        duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+        cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
+    }
+}
+
+
+void part3loop()
+{
+    for (float i = 0.01; i < 0.06; i += 0.01)
+    {
+        vector<vector<int>> triangle_graph = initialize_graph(1024, i);
+        int num_triangles = calculate_triangles(triangle_graph);
+        cout << num_triangles << endl;
+    }  
+}
+
+
 // main function
 int main(void)
 {
@@ -355,33 +391,19 @@ int main(void)
     vector<vector<int> > matrix2;
     vector<vector<int> > result_matrix;
         
+        
     // Part 2: Experimentally determine crossover point
-    for(int i = 2; i < 2048; i*=2) {
-        pad_matrix(matrix, i);
-        pad_matrix(matrix2, i);
-        pad_matrix(result_matrix, i);
-
-        init_matrix(matrix, i, i);
-        init_matrix(matrix2, i, i);
-
-        std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
-        matrix_multiply(matrix, matrix2, result_matrix);
-        std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
-        std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
-
-        start = chrono::high_resolution_clock::now();
-        strassen_matrix(matrix, matrix2, result_matrix, i);
-        end = chrono::high_resolution_clock::now();
-        duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
-    }
+    // while(crosspoint < 100) {
+    //     cout << "Crossover point: " << crosspoint << endl;
+    //     vector<vector<int> > matrix;
+    //     vector<vector<int> > matrix2;
+    //     vector<vector<int> > result_matrix;
+    //     part2loop(matrix, matrix2, result_matrix);
+    //     crosspoint += 16;
+    // }
 
     // Part 3: Calculate number of triangles for p = 0.01 through 0.05
-    vector<vector<int>> triangle_graph = initialize_graph(1024, 0.05);
-    int num_triangles = calculate_triangles(triangle_graph);
-
-    cout << num_triangles << endl;
+    part3loop();
     
     return 0;
 }
