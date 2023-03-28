@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <chrono>
+#include <fstream>
 
 using namespace std;
 
@@ -335,6 +336,7 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, vect
 
         start = chrono::high_resolution_clock::now();
         strassen_matrix(matrix, matrix2, result_matrix, i);
+        prune_matrix(result_matrix, i, i);
         end = chrono::high_resolution_clock::now();
         duration = chrono::duration_cast<chrono::milliseconds>(end - start);
         cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
@@ -358,7 +360,7 @@ int main(void)
 {
     srand(static_cast<unsigned>(time(0)));
 
-    crosspoint = 16;
+    crosspoint = 64;
 
     // initialize a matrix of m x n, and another one of n x p
     int m = 11;
@@ -393,17 +395,20 @@ int main(void)
         
         
     // Part 2: Experimentally determine crossover point
-    // while(crosspoint < 100) {
-    //     cout << "Crossover point: " << crosspoint << endl;
-    //     vector<vector<int> > matrix;
-    //     vector<vector<int> > matrix2;
-    //     vector<vector<int> > result_matrix;
-    //     part2loop(matrix, matrix2, result_matrix);
-    //     crosspoint += 16;
-    // }
+    while(crosspoint < 90) {
+        cout << "Crossover point: " << crosspoint << endl;
+        vector<vector<int> > matrix;
+        vector<vector<int> > matrix2;
+        vector<vector<int> > result_matrix;
+        part2loop(matrix, matrix2, result_matrix);
+        crosspoint += 1;
+    }
 
     // Part 3: Calculate number of triangles for p = 0.01 through 0.05
-    part3loop();
+    for (int i = 0; i < 5; i++)
+    {
+        part3loop();
+    }
     
     return 0;
 }
