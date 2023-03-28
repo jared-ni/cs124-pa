@@ -1,6 +1,7 @@
 
 Compile program using:
-g++ -std=c++17 -o matrix matrix2.cc
+g++ -std=c++17 -o matrix matrix.cc
+
 g++ -std=c++17 -o randmst randmst.cc
 
 g++ -Xpreprocessor -fopenmp matrix.cc  -o  hellosmp

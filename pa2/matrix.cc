@@ -8,6 +8,7 @@
 
 using namespace std;
 
+int crosspoint = 16;
 
 // print vector of vectors matrix
 void print_matrix(vector<vector<int> > &matrix) {
@@ -137,6 +138,13 @@ void prune_matrix(vector<vector<int> > &C, int m, int p) {
     }
 }
 
+void put_back(vector<vector<int> > &C, vector<vector<int> > &C1, vector<vector<int> > &, int row_beg, int col_beg, int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            C[i + row_beg][j + col_beg] = C1[i][j];
+        }
+    }
+}
 
 // Strassen's matrix multiplication in O(n^2.81). A * B = C
 void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C, int size)
@@ -145,6 +153,10 @@ void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
     // base case
     if (size == 1) {
         C[0][0] = A[0][0] * B[0][0];
+        return;
+    }
+    else if (size < crosspoint) {
+        matrix_multiply(A, B, C);
         return;
     }
     else if (size % 2 != 0) {
@@ -267,28 +279,41 @@ void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
             C[i + half][j + half] = C4[i][j];
         }
     }
+    // put_back
 }
 
 // initialize random graph including edges with probability p = 0.01 - 0.05
-vector<vector<int> > initialize_graph(float p)
+vector<vector<int> > initialize_graph(int dim, float p)
 {
-    vector<vector<int> > G(1024, vector<int>(1024));
-    for (int i = 0; i < 1024; i++) {
-        for (int j = 0; j < 1024; j++) {
+    vector<vector<int> > G(dim, vector<int>(dim));
+    for (int i = 0; i < dim; i++) {
+        for (int j = 0; j < dim; j++) {
             G[i][j] = 0;
+            bool edge = (rand() % 100) < (p * 100);
+            if (edge == true) {
+                G[i][j] = 1;
+            }
         }
     }
     return G;
 }
 
+// calculate number of triangles in a graph G
 int calculate_triangles(vector<vector<int>> &G)
 {
-    vector<vector<int> > G2(1024, vector<int>(1024));
-    strassen_matrix(G, G, G2, 1024);
+    int dim = G.size();
+    vector<vector<int> > G2(dim, vector<int>(dim));
+    strassen_matrix(G, G, G2, dim);
 
-    vector<vector<int> > G3(1024, vector<int>(1024));
-    strassen_matrix(G2, G2, G3, 1024);
-    return 0;
+    vector<vector<int> > G3(dim, vector<int>(dim));
+    strassen_matrix(G2, G, G3, dim);
+
+    int num_triangles = 0;
+    for (int i = 0; i < dim; i++) {
+        num_triangles += G3[i][i];
+    }
+
+    return num_triangles / 6;
 }
 
 
@@ -297,13 +322,15 @@ int main(void)
 {
     srand(static_cast<unsigned>(time(0)));
 
+    crosspoint = 16;
+
     // initialize a matrix of m x n, and another one of n x p
     int m = 11;
     int n = 5;
     int p = 11;
-    vector<vector<int> > matrix(m, vector<int>(n));
-    vector<vector<int> > matrix2(n, vector<int>(p));
-    vector<vector<int> > result_matrix(m, vector<int>(p));
+    // vector<vector<int> > matrix(m, vector<int>(n));
+    // vector<vector<int> > matrix2(n, vector<int>(p));
+    // vector<vector<int> > result_matrix(m, vector<int>(p));
 
     // init_matrix(matrix, m, n);
     // init_matrix(matrix2, n, p);
@@ -324,28 +351,37 @@ int main(void)
     // cout << "Strassen's matrix multiplication:" << endl;
     // print_matrix(result_matrix);
 
+    vector<vector<int> > matrix;
+    vector<vector<int> > matrix2;
+    vector<vector<int> > result_matrix;
+        
+    // Part 2: Experimentally determine crossover point
+    for(int i = 2; i < 2048; i*=2) {
+        pad_matrix(matrix, i);
+        pad_matrix(matrix2, i);
+        pad_matrix(result_matrix, i);
 
-    // experiment with different matrix sizes, and time the results
-    // for(int i = 2; i < 2048; i*=2) {
-    //     vector<vector<int> > matrix(i, vector<int>(i));
-    //     vector<vector<int> > matrix2(i, vector<int>(i));
-    //     vector<vector<int> > result_matrix(i, vector<int>(i));
+        init_matrix(matrix, i, i);
+        init_matrix(matrix2, i, i);
 
-    //     init_matrix(matrix, i, i);
-    //     init_matrix(matrix2, i, i);
+        std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
+        matrix_multiply(matrix, matrix2, result_matrix);
+        std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
+        std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+        cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
 
-    //     std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
-    //     matrix_multiply(matrix, matrix2, result_matrix);
-    //     std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
-    //     std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-    //     cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
+        start = chrono::high_resolution_clock::now();
+        strassen_matrix(matrix, matrix2, result_matrix, i);
+        end = chrono::high_resolution_clock::now();
+        duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+        cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
+    }
 
-    //     start = chrono::high_resolution_clock::now();
-    //     strassen_matrix(matrix, matrix2, result_matrix, i);
-    //     end = chrono::high_resolution_clock::now();
-    //     duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-    //     cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
-    // }
+    // Part 3: Calculate number of triangles for p = 0.01 through 0.05
+    vector<vector<int>> triangle_graph = initialize_graph(1024, 0.05);
+    int num_triangles = calculate_triangles(triangle_graph);
+
+    cout << num_triangles << endl;
     
     return 0;
 }
