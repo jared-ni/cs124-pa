@@ -1,5 +1,12 @@
 
 Compile program using:
-g++ -std=c++17 -o matrix matrix.cc -fopenmp
-/opt/homebrew/opt/llvm/bin/clang -fopenmp -L/opt/homebrew/opt/llvm/lib matrix.cc
-clang -Xpreprocessor -fopenmp matrix.cc -lomp
+g++ -std=c++17 -o matrix matrix2.cc
+g++ -std=c++17 -o randmst randmst.cc
+
+g++ -Xpreprocessor -fopenmp matrix.cc  -o  hellosmp
+g++ -Xpreprocessor -fopenmp matrix.cc -lomp -o test
+g++ matrix.cc -fopenmp
+
+g++ -Xclang -fopenmp matrix.cc -lomp -o test
+
+g++ -c matrix.cc -o matrix.o -fopenmp
