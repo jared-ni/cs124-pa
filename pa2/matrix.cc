@@ -44,20 +44,6 @@ void matrix_multiply(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
 }
 
 // helper addition function for Strassen's
-void add_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C)
-{
-    int m = A.size();
-    int n = B.size();
-    
-    for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            C[i][j] = A[i][j] + B[i][j];
-        }
-    }
-}
-
 void add_m(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C, int size)
 {
     for (int i = 0; i < size; i++)
@@ -71,19 +57,6 @@ void add_m(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> 
 
 
 // helper subtraction function for Strassen's
-void subtract_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C)
-{
-    int m = A.size();
-    int n = B.size();
-    
-    for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            C[i][j] = A[i][j] - B[i][j];
-        }
-    }
-}
 void subtract_m(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C, int size)
 {
     for (int i = 0; i < size; i++)
@@ -139,13 +112,6 @@ void prune_matrix(vector<vector<int> > &C, int m, int p) {
     }
 }
 
-void put_back(vector<vector<int> > &C, vector<vector<int> > &C1, vector<vector<int> > &, int row_beg, int col_beg, int size) {
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            C[i + row_beg][j + col_beg] = C1[i][j];
-        }
-    }
-}
 
 // Strassen's matrix multiplication in O(n^2.81). A * B = C
 void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C, int size)
@@ -280,7 +246,6 @@ void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
             C[i + half][j + half] = C4[i][j];
         }
     }
-    // put_back
 }
 
 // initialize random graph including edges with probability p = 0.01 - 0.05
