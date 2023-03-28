@@ -56,6 +56,17 @@ void add_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<in
     }
 }
 
+void add_m(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            C[i][j] = A[i][j] + B[i][j];
+        }
+    }
+}
+
 
 // helper subtraction function for Strassen's
 void subtract_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C)
@@ -71,6 +82,17 @@ void subtract_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vect
         }
     }
 }
+void subtract_m(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            C[i][j] = A[i][j] - B[i][j];
+        }
+    }
+}
+
 
 // initialize a vector of vectors m x n matrix with random numbers, pass by reference
 void init_matrix(vector<vector<int>> &matrix, int m, int n)
@@ -85,25 +107,15 @@ void init_matrix(vector<vector<int>> &matrix, int m, int n)
 }
 
 // pad matrix dimensions to be square and a power of 2
-void pad_matrix(vector<vector<int>> &matrix, int rows, int cols, int dim)
+void pad_matrix(vector<vector<int>> &matrix, int dim)
 {
-    // pad existing rows
-    for (auto &row : matrix)
-    {
-        for (int r = cols; r < dim; r++)
-        {
-            row.push_back(0);
-        }
+    // add rows
+    for (int i = matrix.size(); i < dim; i++) {
+        matrix.push_back(vector<int>(dim, 0));
     }
-    // pad by adding more rows
-    for (int i = rows; i < dim; i++)
-    {
-        vector<int> new_row;
-        for (int j = 0; j < dim; j++)
-        {
-            new_row.push_back(0);
-        }
-        matrix.push_back(new_row);
+    // resize rows and columns with 0s
+    for (auto &row : matrix) {
+        row.resize(dim);
     }
 }
 
@@ -127,44 +139,49 @@ void prune_matrix(vector<vector<int>> &C, int m, int p) {
 
 
 // Strassen's matrix multiplication in O(n^2.81). A * B = C
-void strassen_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C)
+void strassen_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int size)
 {   
-    int m = A.size();
-    int n = B.size();
-    int p = B[0].size();
-    // check if padding is needed
-    // (m & (m - 1)) != 0
-    if (m != n || n != p || (m & (m - 1)) != 0)
-    {
-        // calculate target matrix dimension
-        int max_dim = max({m, n, p});
-        int dimension = pow(2, ceil(log2(max_dim)));
-        pad_matrix(A, m, n, dimension);
-        pad_matrix(B, n, p, dimension);
-        pad_matrix(C, m, p, dimension);
-    }
+    // int m = A.size();
+    // int n = B.size();
+    // int p = B[0].size();
+    // // check if padding is needed
+    // // (m & (m - 1)) != 0
+    // if (m != n || n != p || (m & (m - 1)) != 0)
+    // {
+    //     // calculate target matrix dimension
+    //     int max_dim = max({m, n, p});
+    //     int dimension = pow(2, ceil(log2(max_dim)));
+    //     pad_matrix(A, m, n, dimension);
+    //     pad_matrix(B, n, p, dimension);
+    //     pad_matrix(C, m, p, dimension);
+    // }
 
     // now we have 2^n x 2^n matrices as A, B, base case for strassen's is 2 x 2
     // base case
-    int A_length = A.size();
-
-    if (A_length == 1) {
+    if (size == 1) {
         C[0][0] = A[0][0] * B[0][0];
         return;
     }
+    else if (size % 2 != 0) {
+        size += 1;
+        pad_matrix(A, size);
+        pad_matrix(B, size);
+        pad_matrix(C, size);
+    }
 
     // initialize submatrices a through h
-    int half = A_length / 2;
-
+    int half = size / 2;
+    
+    vector<int> row(half, 0);
     // initialize submatrices a through h
-    vector<vector<int>> a(half, vector<int>(half));
-    vector<vector<int>> b(half, vector<int>(half));
-    vector<vector<int>> c(half, vector<int>(half));
-    vector<vector<int>> d(half, vector<int>(half));
-    vector<vector<int>> e(half, vector<int>(half));
-    vector<vector<int>> f(half, vector<int>(half));
-    vector<vector<int>> g(half, vector<int>(half));
-    vector<vector<int>> h(half, vector<int>(half));
+    vector<vector<int>> a(half, row);
+    vector<vector<int>> b(half, row);
+    vector<vector<int>> c(half, row);
+    vector<vector<int>> d(half, row);
+    vector<vector<int>> e(half, row);
+    vector<vector<int>> f(half, row);
+    vector<vector<int>> g(half, row);
+    vector<vector<int>> h(half, row);
     
     for (int i = 0; i < half; i++)
     {
@@ -185,73 +202,73 @@ void strassen_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vect
     }
     
     // initiate P1 through P7
-    vector<vector<int>> p1(half, vector<int>(half));
-    vector<vector<int>> p2(half, vector<int>(half));
-    vector<vector<int>> p3(half, vector<int>(half));
-    vector<vector<int>> p4(half, vector<int>(half));
-    vector<vector<int>> p5(half, vector<int>(half));
-    vector<vector<int>> p6(half, vector<int>(half));
-    vector<vector<int>> p7(half, vector<int>(half));
+    vector<vector<int>> p1(half, row);
+    vector<vector<int>> p2(half, row);
+    vector<vector<int>> p3(half, row);
+    vector<vector<int>> p4(half, row);
+    vector<vector<int>> p5(half, row);
+    vector<vector<int>> p6(half, row);
+    vector<vector<int>> p7(half, row);
 
     // two temp arrays
-    vector<vector<int>> temp1(half, vector<int>(half));
-    vector<vector<int>> temp2(half, vector<int>(half));
+    vector<vector<int>> temp1(half, row);
+    vector<vector<int>> temp2(half, row);
 
 
     // calculate P1 through P7
     // P1 = A(F - H)
-    subtract_matrix(f, h, temp1);
-    strassen_matrix(a, temp1, p1);
+    subtract_m(f, h, temp1, half);
+    strassen_matrix(a, temp1, p1, half);
 
     // P2 = (A + B)H
-    add_matrix(a, b, temp1);
-    strassen_matrix(temp1, h, p2);
+    add_m(a, b, temp1, half);
+    strassen_matrix(temp1, h, p2, half);
 
     // P3 = (C + D)E
-    add_matrix(c, d, temp1);
-    strassen_matrix(temp1, e, p3);
+    add_m(c, d, temp1, half);
+    strassen_matrix(temp1, e, p3, half);
 
     // P4 = D(G - E)
-    subtract_matrix(g, e, temp1);
-    strassen_matrix(d, temp1, p4);
+    subtract_m(g, e, temp1, half);
+    strassen_matrix(d, temp1, p4, half);
 
     // P5 = (A + D)(E + H)
-    add_matrix(a, d, temp1);
-    add_matrix(e, h, temp2);
-    strassen_matrix(temp1, temp2, p5);
+    add_m(a, d, temp1, half);
+    add_m(e, h, temp2, half);
+    strassen_matrix(temp1, temp2, p5, half);
 
     // P6 = (B - D)(G + H)
-    subtract_matrix(b, d, temp1);
-    add_matrix(g, h, temp2);
-    strassen_matrix(temp1, temp2, p6);
+    subtract_m(b, d, temp1, half);
+    add_m(g, h, temp2, half);
+    strassen_matrix(temp1, temp2, p6, half);
 
     // P7 = (C - A)(E + F)
-    subtract_matrix(c, a, temp1);
-    add_matrix(e, f, temp2);
-    strassen_matrix(temp1, temp2, p7);
+    subtract_m(c, a, temp1, half);
+    add_m(e, f, temp2, half);
+    strassen_matrix(temp1, temp2, p7, half);
 
     
     // combine submatrices of C
-    vector<vector<int>> C1(half, vector<int>(half)); 
-    vector<vector<int>> C2(half, vector<int>(half));
-    vector<vector<int>> C3(half, vector<int>(half));
-    vector<vector<int>> C4(half, vector<int>(half));
+    vector<vector<int>> C1(half, row); 
+    vector<vector<int>> C2(half, row);
+    vector<vector<int>> C3(half, row);
+    vector<vector<int>> C4(half, row);
 
     // C1 = P4 + P5 + P6 - P2
-    add_matrix(p4, p5, temp1);
-    subtract_matrix(p6, p2, temp2);
-    add_matrix(temp1, temp2, C1);
+    add_m(p4, p5, temp1, half);
+    subtract_m(p6, p2, temp2, half);
+    add_m(temp1, temp2, C1, half);
 
     // C2 = P1 + P2
-    add_matrix(p1, p2, C2);
+    add_m(p1, p2, C2, half);
 
     // C3 = P3 + P4
-    add_matrix(p3, p4, C3);
+    add_m(p3, p4, C3, half);
 
     // C4 = P1 - p3 + p5 + p7
-    subtract_matrix(p1, p3, temp1);
-    add_matrix(p5, p7, temp2);
-    add_matrix(temp1, temp2, C4);
+    subtract_m(p1, p3, temp1, half);
+    add_m(p5, p7, temp2, half);
+    add_m(temp1, temp2, C4, half);
     
 
     // combine submatrices of C into single matrix 
@@ -274,54 +291,54 @@ int main(void)
     srand(static_cast<unsigned>(time(0)));
 
     // initialize a matrix of m x n, and another one of n x p
-    int m = 5;
+    int m = 11;
     int n = 5;
-    int p = 5;
+    int p = 11;
     vector<vector<int>> matrix(m, vector<int>(n));
     vector<vector<int>> matrix2(n, vector<int>(p));
-    // vector<vector<int>> result_matrix(m, vector<int>(p));
+    vector<vector<int>> result_matrix(m, vector<int>(p));
 
     init_matrix(matrix, m, n);
     init_matrix(matrix2, n, p);
 
-    // cout << "Matrix 1: " << endl;
-    // print_matrix(matrix);
-    // cout << "Matrix 2: " << endl;
-    // print_matrix(matrix2);
+    cout << "Matrix 1: " << endl;
+    print_matrix(matrix);
+    cout << "Matrix 2: " << endl;
+    print_matrix(matrix2);
 
-    // // multiply matrices
-    // matrix_multiply(matrix, matrix2, result_matrix);
-    // cout << "Naive matrix multiplication:" << endl;
-    // print_matrix(result_matrix);
-    
-    // // Strassen's matrix multiplication
-    // strassen_matrix(matrix, matrix2, result_matrix);
-    // prune_matrix(result_matrix, m, p);
-    // cout << "Strassen's matrix multiplication:" << endl;
-    // print_matrix(result_matrix);
+    // multiply matrices
+    matrix_multiply(matrix, matrix2, result_matrix);
+    cout << "Naive matrix multiplication:" << endl;
+    print_matrix(result_matrix);
+
+    // Strassen's matrix multiplication
+    strassen_matrix(matrix, matrix2, result_matrix, max({m, n, p}));
+    prune_matrix(result_matrix, m, p);
+    cout << "Strassen's matrix multiplication:" << endl;
+    print_matrix(result_matrix);
 
 
     // experiment with different matrix sizes, and time the results
-    for(int i = 2; i < 2048; i*=2) {
-        vector<vector<int>> matrix(i, vector<int>(i));
-        vector<vector<int>> matrix2(i, vector<int>(i));
-        vector<vector<int>> result_matrix(i, vector<int>(i));
+    // for(int i = 2; i < 2048; i*=2) {
+    //     vector<vector<int>> matrix(i, vector<int>(i));
+    //     vector<vector<int>> matrix2(i, vector<int>(i));
+    //     vector<vector<int>> result_matrix(i, vector<int>(i));
 
-        init_matrix(matrix, i, i);
-        init_matrix(matrix2, i, i);
+    //     init_matrix(matrix, i, i);
+    //     init_matrix(matrix2, i, i);
 
-        auto start = chrono::high_resolution_clock::now();
-        matrix_multiply(matrix, matrix2, result_matrix);
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
+    //     auto start = chrono::high_resolution_clock::now();
+    //     matrix_multiply(matrix, matrix2, result_matrix);
+    //     auto end = chrono::high_resolution_clock::now();
+    //     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+    //     cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
 
-        start = chrono::high_resolution_clock::now();
-        strassen_matrix(matrix, matrix2, result_matrix);
-        end = chrono::high_resolution_clock::now();
-        duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
-    }
+    //     start = chrono::high_resolution_clock::now();
+    //     strassen_matrix(matrix, matrix2, result_matrix, i);
+    //     end = chrono::high_resolution_clock::now();
+    //     duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+    //     cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
+    // }
     
     // return 0;
 }
