@@ -1,1 +1,3 @@
 Crossover point,Dimension,Brute Force (milisec),Strassen's (milisec)
+5,1025x1025,6937,168219
+6,1025x1025,6851,45698

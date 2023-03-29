@@ -286,7 +286,7 @@ int calculate_triangles(vector<vector<int>> &G)
 // part 2 experiment time function
 void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, 
                vector<vector<int> > &result_matrix, vector<vector<int> > &result_matrix2, fstream &fout) {
-    for(int i = 2; i < 3; i*=2) {
+    for(int i = 1025; i < 2048; i*=2) {
         pad_matrix(matrix, i);
         pad_matrix(matrix2, i);
         pad_matrix(result_matrix, i);
@@ -299,8 +299,6 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2,
         for (int j = 0; j < 1; j++) {
             std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
             matrix_multiply(matrix, matrix2, result_matrix);
-            cout << "Brute force: " << endl;
-            print_matrix(result_matrix);
 
             std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
             std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
@@ -311,8 +309,6 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2,
             strassen_matrix(matrix, matrix2, result_matrix2, i);
             prune_matrix(result_matrix, i, i);
 
-            cout << "Strassen's: " << endl;
-            print_matrix(result_matrix2);
             end = chrono::high_resolution_clock::now();
             duration = chrono::duration_cast<chrono::milliseconds>(end - start);
             fout << "," << duration.count() << endl;
@@ -338,40 +334,14 @@ int main(int argc, char *argv[])
 {
     srand(static_cast<unsigned>(time(0)));
 
-    crosspoint = 250;
-
-    // // initialize a matrix of m x n, and another one of n x p
-    // int m = 2;
-    // int n = 4;
-    // int p = 2;
-    
-    // vector<vector<int> > matrix(m, vector<int>(n));
-    // vector<vector<int> > matrix2(n, vector<int>(p));
-    // vector<vector<int> > result_matrix(m, vector<int>(p));
-    // vector<vector<int> > result_matrix2(m, vector<int>(p));
-
-    // // Part 1: Multiply two matrices
-    // init_matrix(matrix, m, n);
-    // print_matrix(matrix);
-
-    // init_matrix(matrix2, n, p);
-    // print_matrix(matrix2);
-
-    // matrix_multiply(matrix, matrix2, result_matrix);
-    // cout << "Brute force: " << endl;
-    // print_matrix(result_matrix);
-
-    // strassen_matrix(matrix, matrix2, result_matrix2, m);
-    // prune_matrix(result_matrix2, m, p);
-    // cout << "Strassen's: " << endl;
-    // print_matrix(result_matrix2);
+    crosspoint = 5;
 
         
     // Part 2: Experimentally determine crossover point
     fstream fout;
-    fout.open("part2-1025-250s.csv", ios::out);
+    fout.open("part2-1025-whole2.csv", ios::out);
     fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
-    while(crosspoint < 300) {
+    while(crosspoint < 550) {
         // cout << "Crossover point: " << crosspoint << endl;
         vector<vector<int> > matrix;
         vector<vector<int> > matrix2;
