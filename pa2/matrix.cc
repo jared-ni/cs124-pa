@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int crosspoint = 16;
+int crosspoint = 1;
 
 // print vector of vectors matrix
 void print_matrix(vector<vector<int> > &matrix) {
@@ -286,7 +286,7 @@ int calculate_triangles(vector<vector<int>> &G)
 // part 2 experiment time function
 void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, 
                vector<vector<int> > &result_matrix, fstream &fout) {
-    for(int i = 2; i < 2048; i*=2) {
+    for(int i = 1024; i < 2048; i*=2) {
         pad_matrix(matrix, i);
         pad_matrix(matrix2, i);
         pad_matrix(result_matrix, i);
@@ -294,20 +294,23 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2,
         init_matrix(matrix, i, i);
         init_matrix(matrix2, i, i);
 
-        std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
-        matrix_multiply(matrix, matrix2, result_matrix);
-        std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
-        std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-        // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
-        cout << crosspoint << "," << i<<"x"<<i<< "," << duration.count();
+        // repeat 5 trials for each matrix size
+        for (int j = 0; j < 1; j++) {
+            std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
+            matrix_multiply(matrix, matrix2, result_matrix);
+            std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
+            std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+            // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
+            fout << crosspoint << "," << i<<"x"<<i<< "," << duration.count();
 
-        start = chrono::high_resolution_clock::now();
-        strassen_matrix(matrix, matrix2, result_matrix, i);
-        prune_matrix(result_matrix, i, i);
-        end = chrono::high_resolution_clock::now();
-        duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "," << duration.count() << endl;
-        // cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
+            start = chrono::high_resolution_clock::now();
+            strassen_matrix(matrix, matrix2, result_matrix, i);
+            prune_matrix(result_matrix, i, i);
+            end = chrono::high_resolution_clock::now();
+            duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+            fout << "," << duration.count() << endl;
+            // cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
+        }
     }
 }
 
@@ -328,7 +331,7 @@ int main(void)
 {
     srand(static_cast<unsigned>(time(0)));
 
-    crosspoint = 64;
+    crosspoint = 300;
 
     // initialize a matrix of m x n, and another one of n x p
     int m = 11;
@@ -364,9 +367,9 @@ int main(void)
         
     // Part 2: Experimentally determine crossover point
     fstream fout;
-    fout.open("part2.txt", ios::out);
-    fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force Time"<<","<<"Strassen's Time"<<endl;
-    while(crosspoint < 90) {
+    fout.open("part2-1024-16-300s.csv", ios::out);
+    fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
+    while(crosspoint < 350) {
         // cout << "Crossover point: " << crosspoint << endl;
         vector<vector<int> > matrix;
         vector<vector<int> > matrix2;
