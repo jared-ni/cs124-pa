@@ -284,28 +284,34 @@ int calculate_triangles(vector<vector<int>> &G)
 
 
 // part 2 experiment time function
-void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, 
-               vector<vector<int> > &result_matrix, fstream &fout) {
-    for(int i = 1025; i < 2048; i*=2) {
+void part2loop(vector<vector<int>> &matrix, vector<vector<int>> &matrix2,
+               vector<vector<int>> &result_matrix, vector<vector<int>> &result_matrix2, fstream &fout)
+{
+    for (int i = 511; i < 513; i *= 2)
+    {
         pad_matrix(matrix, i);
         pad_matrix(matrix2, i);
         pad_matrix(result_matrix, i);
+        pad_matrix(result_matrix2, i);
 
         init_matrix(matrix, i, i);
         init_matrix(matrix2, i, i);
 
         // repeat 5 trials for each matrix size
-        for (int j = 0; j < 1; j++) {
-            auto start = chrono::high_resolution_clock::now();
+        for (int j = 0; j < 1; j++)
+        {
+            std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
             matrix_multiply(matrix, matrix2, result_matrix);
-            auto end = chrono::high_resolution_clock::now();
-            auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+            std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
+            std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
             // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
-            fout << crosspoint << "," << i<<"x"<<i<< "," << duration.count();
+            fout << crosspoint << "," << i << "x" << i << "," << duration.count();
 
             start = chrono::high_resolution_clock::now();
-            strassen_matrix(matrix, matrix2, result_matrix, i);
-            prune_matrix(result_matrix, i, i);
+            strassen_matrix(matrix, matrix2, result_matrix2, i);
+            prune_matrix(result_matrix2, i, i);
+
             end = chrono::high_resolution_clock::now();
             duration = chrono::duration_cast<chrono::milliseconds>(end - start);
             fout << "," << duration.count() << endl;
@@ -313,7 +319,6 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2,
         }
     }
 }
-
 
 void part3loop()
 {
@@ -414,49 +419,57 @@ int main(int argc, char *argv[])
     // experiment mode
     else 
     { 
-
         srand(static_cast<unsigned>(time(0)));
 
-        crosspoint = 250;
+        vector<vector<int>> matrix;
+        vector<vector<int>> matrix2;
+        vector<vector<int>> result_matrix;
+        vector<vector<int>> result_matrix2;
 
-        // initialize a matrix of m x n, and another one of n x p
-        int m = 2;
-        int n = 2;
-        int p = 2;
-        
-        vector<vector<int> > matrix(m, vector<int>(n));
-        vector<vector<int> > matrix2(n, vector<int>(p));
-        vector<vector<int> > result_matrix(m, vector<int>(p));
+        // Part 2: Experimentally determine crossover point
+        fstream fout;
+        fout.open("even_matrices.csv", ios::out);
+        fout << "Crossover point"
+            << ","
+            << "Dimension"
+            << ","
+            << "Brute Force (milisec)"
+            << ","
+            << "Strassen's (milisec)" << endl;
 
-        // Part 1: Multiply two matrices
-        init_matrix(matrix, m, n);
-        print_matrix(matrix);
+        for (int i = 2; i < 201; i += 2)
+        {
+            crosspoint = i / 2;
 
-        init_matrix(matrix2, n, p);
-        print_matrix(matrix2);
+            pad_matrix(matrix, i);
+            pad_matrix(matrix2, i);
+            pad_matrix(result_matrix, i);
+            pad_matrix(result_matrix2, i);
 
-        matrix_multiply(matrix, matrix2, result_matrix);
-        cout << "Brute force: " << endl;
-        print_matrix(result_matrix);
+            init_matrix(matrix, i, i);
+            init_matrix(matrix2, i, i);
 
-        strassen_matrix(matrix, matrix2, result_matrix, m);
-        prune_matrix(result_matrix, m, p);
-        cout << "Strassen's: " << endl;
-        print_matrix(result_matrix);
+            // repeat 5 trials for each matrix size
+            for (int j = 0; j < 1; j++)
+            {
+                std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
+                matrix_multiply(matrix, matrix2, result_matrix);
 
-        // // Part 2: Experimentally determine crossover point
-        // fstream fout;
-        // fout.open("part2-1025-200s.csv", ios::out);
-        // // fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
-        // while(crosspoint < 250) {
-        //     // cout << "Crossover point: " << crosspoint << endl;
-        //     vector<vector<int> > matrix;
-        //     vector<vector<int> > matrix2;
-        //     vector<vector<int> > result_matrix;
-        //     part2loop(matrix, matrix2, result_matrix, fout);
-        //     crosspoint += 1;
-        // }
-        // fout.close();
+                std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
+                std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+                // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
+                fout << crosspoint << "," << i << "x" << i << "," << duration.count();
+
+                start = chrono::high_resolution_clock::now();
+                strassen_matrix(matrix, matrix2, result_matrix2, i);
+                prune_matrix(result_matrix2, i, i);
+
+                end = chrono::high_resolution_clock::now();
+                duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+                fout << "," << duration.count() << endl;
+                // cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
+            }
+        }
 
         // Part 3: Calculate number of triangles for p = 0.01 through 0.05
         // for (int i = 0; i < 5; i++)
