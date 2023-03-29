@@ -286,7 +286,7 @@ int calculate_triangles(vector<vector<int>> &G)
 // part 2 experiment time function
 void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, 
                vector<vector<int> > &result_matrix, fstream &fout) {
-    for(int i = 1024; i < 2048; i*=2) {
+    for(int i = 1025; i < 2048; i*=2) {
         pad_matrix(matrix, i);
         pad_matrix(matrix2, i);
         pad_matrix(result_matrix, i);
@@ -331,34 +331,13 @@ int main(void)
 {
     srand(static_cast<unsigned>(time(0)));
 
-    crosspoint = 300;
+    crosspoint = 200;
 
     // initialize a matrix of m x n, and another one of n x p
     int m = 11;
     int n = 5;
     int p = 11;
-    // vector<vector<int> > matrix(m, vector<int>(n));
-    // vector<vector<int> > matrix2(n, vector<int>(p));
-    // vector<vector<int> > result_matrix(m, vector<int>(p));
-
-    // init_matrix(matrix, m, n);
-    // init_matrix(matrix2, n, p);
-
-    // cout << "Matrix 1: " << endl;
-    // print_matrix(matrix);
-    // cout << "Matrix 2: " << endl;
-    // print_matrix(matrix2);
-
-    // // multiply matrices
-    // matrix_multiply(matrix, matrix2, result_matrix);
-    // cout << "Naive matrix multiplication:" << endl;
-    // print_matrix(result_matrix);
-
-    // // Strassen's matrix multiplication
-    // strassen_matrix(matrix, matrix2, result_matrix, max({m, n, p}));
-    // prune_matrix(result_matrix, m, p);
-    // cout << "Strassen's matrix multiplication:" << endl;
-    // print_matrix(result_matrix);
+    
 
     vector<vector<int> > matrix;
     vector<vector<int> > matrix2;
@@ -367,9 +346,9 @@ int main(void)
         
     // Part 2: Experimentally determine crossover point
     fstream fout;
-    fout.open("part2-1024-16-300s.csv", ios::out);
+    fout.open("part2-1025-200s.csv", ios::out);
     fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
-    while(crosspoint < 350) {
+    while(crosspoint < 250) {
         // cout << "Crossover point: " << crosspoint << endl;
         vector<vector<int> > matrix;
         vector<vector<int> > matrix2;
@@ -380,10 +359,10 @@ int main(void)
     fout.close();
 
     // Part 3: Calculate number of triangles for p = 0.01 through 0.05
-    for (int i = 0; i < 5; i++)
-    {
-        part3loop();
-    }
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     part3loop();
+    // }
     
     return 0;
 }

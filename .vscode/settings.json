@@ -70,6 +70,10 @@
     "utility": "cpp",
     "set": "cpp",
     "bit": "cpp",
-    "__functional_base": "cpp"
+    "__functional_base": "cpp",
+    "deque": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "stack": "cpp"
   }
 }
