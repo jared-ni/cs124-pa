@@ -349,6 +349,7 @@ int main(int argc, char *argv[])
         return 0;
     }
     
+    // gradescope mode
     if (mode == 0) 
     {
         // test if argv[3] is a file
@@ -358,7 +359,6 @@ int main(int argc, char *argv[])
             return 0;
         }
 
-        cout << "d: " << dimension << endl;
         vector<vector<int> > matrix(dimension, vector<int>(dimension));
         vector<vector<int> > matrix2(dimension, vector<int>(dimension));
         vector<vector<int> > result_matrix(dimension, vector<int>(dimension));
@@ -374,26 +374,34 @@ int main(int argc, char *argv[])
                 return 0;
             }
 
-            cout << num << endl;
+            int row;
+            int col;
             if (i < dimension * dimension) {
-                matrix[i / dimension][i % dimension] = num;
+                row = i / dimension;
+                col = i % dimension;
             } 
             else {
-                matrix2[(i - dimension * dimension) / dimension][(i - dimension * dimension) % dimension] = num;
+                row = (i - dimension * dimension) / dimension;
+                col = (i - dimension * dimension) % dimension;
+            }
+
+            // if diagonal, then print
+            if (row == col) {
+                cout << num << endl;
+            }
+            if (i < dimension * dimension) {
+                matrix[row][col] = num;
+            } 
+            else {
+                matrix2[row][col] = num;
             }
             i++;
         }
 
-        cout << "Matrix 1:" << endl;
-        print_matrix(matrix);
-        cout << "Matrix 2:" << endl;
-        print_matrix(matrix2);
-
-        
-
-
         return 0;
     } 
+
+    // experiment mode
     else 
     {
         // initialize a matrix of m x n, and another one of n x p
