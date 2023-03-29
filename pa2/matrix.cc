@@ -286,7 +286,7 @@ int calculate_triangles(vector<vector<int>> &G)
 // part 2 experiment time function
 void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, 
                vector<vector<int> > &result_matrix, vector<vector<int> > &result_matrix2, fstream &fout) {
-    for(int i = 1025; i < 2048; i*=2) {
+    for(int i = 512; i < 513; i*=2) {
         pad_matrix(matrix, i);
         pad_matrix(matrix2, i);
         pad_matrix(result_matrix, i);
@@ -307,7 +307,7 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2,
 
             start = chrono::high_resolution_clock::now();
             strassen_matrix(matrix, matrix2, result_matrix2, i);
-            prune_matrix(result_matrix, i, i);
+            prune_matrix(result_matrix2, i, i);
 
             end = chrono::high_resolution_clock::now();
             duration = chrono::duration_cast<chrono::milliseconds>(end - start);
@@ -334,12 +334,12 @@ int main(int argc, char *argv[])
 {
     srand(static_cast<unsigned>(time(0)));
 
-    crosspoint = 5;
+    crosspoint = 500;
 
         
     // Part 2: Experimentally determine crossover point
     fstream fout;
-    fout.open("part2-1025-whole2.csv", ios::out);
+    fout.open("part2-512-500s.csv", ios::out);
     fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
     while(crosspoint < 550) {
         // cout << "Crossover point: " << crosspoint << endl;
