@@ -256,7 +256,7 @@ vector<vector<int> > initialize_graph(int dim, float p)
         for (int j = 0; j < dim; j++) {
             G[i][j] = 0;
             bool edge = (rand() % 100) < (p * 100);
-            if (edge == true) {
+            if (edge == true && i != j) {
                 G[i][j] = 1;
             }
         }
@@ -327,42 +327,101 @@ void part3loop()
 
 
 // main function
-int main(void)
+int main(int argc, char *argv[])
 {
     srand(static_cast<unsigned>(time(0)));
 
     crosspoint = 200;
 
-    // initialize a matrix of m x n, and another one of n x p
-    int m = 11;
-    int n = 5;
-    int p = 11;
-    
-
-    vector<vector<int> > matrix;
-    vector<vector<int> > matrix2;
-    vector<vector<int> > result_matrix;
-        
-        
-    // Part 2: Experimentally determine crossover point
-    fstream fout;
-    fout.open("part2-1025-200s.csv", ios::out);
-    fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
-    while(crosspoint < 250) {
-        // cout << "Crossover point: " << crosspoint << endl;
-        vector<vector<int> > matrix;
-        vector<vector<int> > matrix2;
-        vector<vector<int> > result_matrix;
-        part2loop(matrix, matrix2, result_matrix, fout);
-        crosspoint += 1;
+    // import 3 command line arguments
+    if (argc != 4) {
+        cout << "Please enter 3 command line arguments" << endl;
+        return 0;
     }
-    fout.close();
 
-    // Part 3: Calculate number of triangles for p = 0.01 through 0.05
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     part3loop();
-    // }
+    // 0 for testing, 1 for experiment
+    int mode = atoi(argv[1]);
     
-    return 0;
+    // dimension of the matrix
+    int dimension = atoi(argv[2]);
+    if (dimension < 1) {
+        cout << "Please enter a positive integer for the dimension of the matrix" << endl;
+        return 0;
+    }
+    
+    if (mode == 0) 
+    {
+        // test if argv[3] is a file
+        ifstream matrix_file(argv[3]);
+        if (!matrix_file) {
+            cout << "Please enter a valid file name" << endl;
+            return 0;
+        }
+
+        cout << "d: " << dimension << endl;
+        vector<vector<int> > matrix(dimension, vector<int>(dimension));
+        vector<vector<int> > matrix2(dimension, vector<int>(dimension));
+        vector<vector<int> > result_matrix(dimension, vector<int>(dimension));
+        
+
+        int num;
+        int i = 0;
+        // if i < dimension * dimension, then it's matrix 1, else it's matrix 2
+        while (matrix_file >> num) {
+            // if i is out of bound
+            if (i >= dimension * dimension * 2) {
+                cout << "Matrix file out of bound." << endl;
+                return 0;
+            }
+
+            cout << num << endl;
+            if (i < dimension * dimension) {
+                matrix[i / dimension][i % dimension] = num;
+            } 
+            else {
+                matrix2[(i - dimension * dimension) / dimension][(i - dimension * dimension) % dimension] = num;
+            }
+            i++;
+        }
+
+        cout << "Matrix 1:" << endl;
+        print_matrix(matrix);
+        cout << "Matrix 2:" << endl;
+        print_matrix(matrix2);
+
+        
+
+
+        return 0;
+    } 
+    else 
+    {
+        // initialize a matrix of m x n, and another one of n x p
+        int m = 11;
+        int n = 5;
+        int p = 11;
+            
+            
+        // Part 2: Experimentally determine crossover point
+        fstream fout;
+        fout.open("part2-1025-200s.csv", ios::out);
+        fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
+        while(crosspoint < 250) {
+            // cout << "Crossover point: " << crosspoint << endl;
+            vector<vector<int> > matrix;
+            vector<vector<int> > matrix2;
+            vector<vector<int> > result_matrix;
+            part2loop(matrix, matrix2, result_matrix, fout);
+            crosspoint += 1;
+        }
+        fout.close();
+
+        // Part 3: Calculate number of triangles for p = 0.01 through 0.05
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     part3loop();
+        // }
+        
+        return 0;
+    }
 }
