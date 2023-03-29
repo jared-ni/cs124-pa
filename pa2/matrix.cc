@@ -12,9 +12,12 @@ using namespace std;
 int crosspoint = 1;
 
 // print vector of vectors matrix
-void print_matrix(vector<vector<int> > &matrix) {
-    for (auto &row : matrix) {
-        for (auto &col : row) {
+void print_matrix(vector<vector<int>> &matrix)
+{
+    for (auto &row : matrix)
+    {
+        for (auto &col : row)
+        {
             cout << col << " ";
         }
         cout << endl;
@@ -22,10 +25,9 @@ void print_matrix(vector<vector<int> > &matrix) {
     cout << endl;
 }
 
-
 // brute force matrix multiplication in O(n^3) that works on any dimension, passing vectors by reference
 // A is m x n, B is n x p, C is m x p
-void matrix_multiply(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C) 
+void matrix_multiply(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C)
 {
     int m = A.size();
     int n = B.size();
@@ -44,7 +46,7 @@ void matrix_multiply(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
 }
 
 // helper addition function for Strassen's
-void add_m(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C, int size)
+void add_m(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int size)
 {
     for (int i = 0; i < size; i++)
     {
@@ -55,9 +57,8 @@ void add_m(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> 
     }
 }
 
-
 // helper subtraction function for Strassen's
-void subtract_m(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C, int size)
+void subtract_m(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int size)
 {
     for (int i = 0; i < size; i++)
     {
@@ -68,9 +69,8 @@ void subtract_m(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<
     }
 }
 
-
 // initialize a vector of vectors m x n matrix with random numbers, pass by reference
-void init_matrix(vector<vector<int> > &matrix, int m, int n)
+void init_matrix(vector<vector<int>> &matrix, int m, int n)
 {
     for (int i = 0; i < m; i++)
     {
@@ -82,51 +82,58 @@ void init_matrix(vector<vector<int> > &matrix, int m, int n)
 }
 
 // pad matrix dimensions to be square and a power of 2
-void pad_matrix(vector<vector<int> > &matrix, int dim)
+void pad_matrix(vector<vector<int>> &matrix, int dim)
 {
     // add rows
-    for (int i = matrix.size(); i < dim; i++) {
+    for (int i = matrix.size(); i < dim; i++)
+    {
         matrix.push_back(vector<int>(dim, 0));
     }
     // resize rows and columns with 0s
-    for (auto &row : matrix) {
+    for (auto &row : matrix)
+    {
         row.resize(dim);
     }
 }
 
-
 // prune the result matrix of padded zeros
-void prune_matrix(vector<vector<int> > &C, int m, int p) {
+void prune_matrix(vector<vector<int>> &C, int m, int p)
+{
     int C_length = C.size();
-    
+
     // remove rows
-    for (int i = C_length - 1; i >= m; i--) {
+    for (int i = C_length - 1; i >= m; i--)
+    {
         C.pop_back();
     }
 
     // remove extra zeros per row
-    for (auto &row : C) {
-        for (int j = C_length - 1; j >= p; j--) {
+    for (auto &row : C)
+    {
+        for (int j = C_length - 1; j >= p; j--)
+        {
             row.pop_back();
         }
     }
 }
 
-
 // Strassen's matrix multiplication in O(n^2.81). A * B = C
-void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<vector<int> > &C, int size)
-{   
+void strassen_matrix(vector<vector<int>> &A, vector<vector<int>> &B, vector<vector<int>> &C, int size)
+{
     // now we have 2^n x 2^n matrices as A, B, base case for strassen's is 2 x 2
     // base case
-    if (size == 1) {
+    if (size == 1)
+    {
         C[0][0] = A[0][0] * B[0][0];
         return;
     }
-    else if (size < crosspoint) {
+    else if (size <= crosspoint)
+    {
         matrix_multiply(A, B, C);
         return;
     }
-    else if (size % 2 != 0) {
+    else if (size % 2 != 0)
+    {
         size += 1;
         pad_matrix(A, size);
         pad_matrix(B, size);
@@ -135,18 +142,18 @@ void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
 
     // initialize submatrices a through h
     int half = size / 2;
-    
+
     vector<int> row(half, 0);
     // initialize submatrices a through h
-    vector<vector<int> > a(half, row);
-    vector<vector<int> > b(half, row);
-    vector<vector<int> > c(half, row);
-    vector<vector<int> > d(half, row);
-    vector<vector<int> > e(half, row);
-    vector<vector<int> > f(half, row);
-    vector<vector<int> > g(half, row);
-    vector<vector<int> > h(half, row);
-    
+    vector<vector<int>> a(half, row);
+    vector<vector<int>> b(half, row);
+    vector<vector<int>> c(half, row);
+    vector<vector<int>> d(half, row);
+    vector<vector<int>> e(half, row);
+    vector<vector<int>> f(half, row);
+    vector<vector<int>> g(half, row);
+    vector<vector<int>> h(half, row);
+
     for (int i = 0; i < half; i++)
     {
         for (int j = 0; j < half; j++)
@@ -164,20 +171,19 @@ void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
             h[i][j] = B[i + half][j + half];
         }
     }
-    
+
     // initiate P1 through P7
-    vector<vector<int> > p1(half, row);
-    vector<vector<int> > p2(half, row);
-    vector<vector<int> > p3(half, row);
-    vector<vector<int> > p4(half, row);
-    vector<vector<int> > p5(half, row);
-    vector<vector<int> > p6(half, row);
-    vector<vector<int> > p7(half, row);
+    vector<vector<int>> p1(half, row);
+    vector<vector<int>> p2(half, row);
+    vector<vector<int>> p3(half, row);
+    vector<vector<int>> p4(half, row);
+    vector<vector<int>> p5(half, row);
+    vector<vector<int>> p6(half, row);
+    vector<vector<int>> p7(half, row);
 
     // two temp arrays
-    vector<vector<int> > temp1(half, row);
-    vector<vector<int> > temp2(half, row);
-
+    vector<vector<int>> temp1(half, row);
+    vector<vector<int>> temp2(half, row);
 
     // calculate P1 through P7
     // P1 = A(F - H)
@@ -211,12 +217,11 @@ void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
     add_m(e, f, temp2, half);
     strassen_matrix(temp1, temp2, p7, half);
 
-    
     // combine submatrices of C
-    vector<vector<int> > C1(half, row); 
-    vector<vector<int> > C2(half, row);
-    vector<vector<int> > C3(half, row);
-    vector<vector<int> > C4(half, row);
+    vector<vector<int>> C1(half, row);
+    vector<vector<int>> C2(half, row);
+    vector<vector<int>> C3(half, row);
+    vector<vector<int>> C4(half, row);
 
     // C1 = P4 + P5 + P6 - P2
     add_m(p4, p5, temp1, half);
@@ -233,9 +238,8 @@ void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
     subtract_m(p1, p3, temp1, half);
     add_m(p5, p7, temp2, half);
     add_m(temp1, temp2, C4, half);
-    
 
-    // combine submatrices of C into single matrix 
+    // combine submatrices of C into single matrix
     for (int i = 0; i < half; i++)
     {
         for (int j = 0; j < half; j++)
@@ -249,14 +253,17 @@ void strassen_matrix(vector<vector<int> > &A, vector<vector<int> > &B, vector<ve
 }
 
 // initialize random graph including edges with probability p = 0.01 - 0.05
-vector<vector<int> > initialize_graph(int dim, float p)
+vector<vector<int>> initialize_graph(int dim, float p)
 {
-    vector<vector<int> > G(dim, vector<int>(dim));
-    for (int i = 0; i < dim; i++) {
-        for (int j = 0; j < dim; j++) {
+    vector<vector<int>> G(dim, vector<int>(dim));
+    for (int i = 0; i < dim; i++)
+    {
+        for (int j = 0; j < dim; j++)
+        {
             G[i][j] = 0;
             bool edge = (rand() % 100) < (p * 100);
-            if (edge == true && i != j) {
+            if (edge == true && i != j)
+            {
                 G[i][j] = 1;
             }
         }
@@ -268,25 +275,93 @@ vector<vector<int> > initialize_graph(int dim, float p)
 int calculate_triangles(vector<vector<int>> &G)
 {
     int dim = G.size();
-    vector<vector<int> > G2(dim, vector<int>(dim));
+    vector<vector<int>> G2(dim, vector<int>(dim));
     strassen_matrix(G, G, G2, dim);
 
-    vector<vector<int> > G3(dim, vector<int>(dim));
+    vector<vector<int>> G3(dim, vector<int>(dim));
     strassen_matrix(G2, G, G3, dim);
 
     int num_triangles = 0;
-    for (int i = 0; i < dim; i++) {
+    for (int i = 0; i < dim; i++)
+    {
         num_triangles += G3[i][i];
     }
 
     return num_triangles / 6;
 }
 
-
 // part 2 experiment time function
-void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, 
-               vector<vector<int> > &result_matrix, vector<vector<int> > &result_matrix2, fstream &fout) {
-    for(int i = 511; i < 513; i*=2) {
+// void part2loop(vector<vector<int>> &matrix, vector<vector<int>> &matrix2,
+//                vector<vector<int>> &result_matrix, vector<vector<int>> &result_matrix2, fstream &fout)
+// {
+//     for (int i = 511; i < 513; i *= 2)
+//     {
+//         pad_matrix(matrix, i);
+//         pad_matrix(matrix2, i);
+//         pad_matrix(result_matrix, i);
+//         pad_matrix(result_matrix2, i);
+
+//         init_matrix(matrix, i, i);
+//         init_matrix(matrix2, i, i);
+
+//         // repeat 5 trials for each matrix size
+//         for (int j = 0; j < 1; j++)
+//         {
+//             std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
+//             matrix_multiply(matrix, matrix2, result_matrix);
+
+//             std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
+//             std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+//             // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
+//             fout << crosspoint << "," << i << "x" << i << "," << duration.count();
+
+//             start = chrono::high_resolution_clock::now();
+//             strassen_matrix(matrix, matrix2, result_matrix2, i);
+//             prune_matrix(result_matrix2, i, i);
+
+//             end = chrono::high_resolution_clock::now();
+//             duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+//             fout << "," << duration.count() << endl;
+//             // cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
+//         }
+//     }
+// }
+
+void part3loop()
+{
+    for (float i = 0.01; i < 0.06; i += 0.01)
+    {
+        vector<vector<int>> triangle_graph = initialize_graph(1024, i);
+        int num_triangles = calculate_triangles(triangle_graph);
+        cout << num_triangles << endl;
+    }
+}
+
+// main function
+int main(int argc, char *argv[])
+{
+    srand(static_cast<unsigned>(time(0)));
+
+    vector<vector<int>> matrix;
+    vector<vector<int>> matrix2;
+    vector<vector<int>> result_matrix;
+    vector<vector<int>> result_matrix2;
+
+    // Part 2: Experimentally determine crossover point
+    fstream fout;
+    fout.open("even_matrices.csv", ios::out);
+    fout << "Crossover point"
+         << ","
+         << "Dimension"
+         << ","
+         << "Brute Force (milisec)"
+         << ","
+         << "Strassen's (milisec)" << endl;
+
+    for (int i = 2; i < 201; i += 2)
+    {
+        crosspoint = i / 2;
+
         pad_matrix(matrix, i);
         pad_matrix(matrix2, i);
         pad_matrix(result_matrix, i);
@@ -296,14 +371,15 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2,
         init_matrix(matrix2, i, i);
 
         // repeat 5 trials for each matrix size
-        for (int j = 0; j < 1; j++) {
+        for (int j = 0; j < 1; j++)
+        {
             std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
             matrix_multiply(matrix, matrix2, result_matrix);
 
             std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
             std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
             // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
-            fout << crosspoint << "," << i<<"x"<<i<< "," << duration.count();
+            fout << crosspoint << "," << i << "x" << i << "," << duration.count();
 
             start = chrono::high_resolution_clock::now();
             strassen_matrix(matrix, matrix2, result_matrix2, i);
@@ -315,41 +391,17 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2,
             // cout << "Time taken for " << i << "x" << i << " matrix using Strassen's algorithm: " << duration.count() << " miliseconds" << endl;
         }
     }
-}
 
-
-void part3loop()
-{
-    for (float i = 0.01; i < 0.06; i += 0.01)
-    {
-        vector<vector<int>> triangle_graph = initialize_graph(1024, i);
-        int num_triangles = calculate_triangles(triangle_graph);
-        cout << num_triangles << endl;
-    }  
-}
-
-
-// main function
-int main(int argc, char *argv[])
-{
-    srand(static_cast<unsigned>(time(0)));
-
-    crosspoint = 400;
-
-        
-    // Part 2: Experimentally determine crossover point
-    fstream fout;
-    fout.open("part2-511-400s.csv", ios::out);
-    fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
-    while(crosspoint < 550) {
-        // cout << "Crossover point: " << crosspoint << endl;
-        vector<vector<int> > matrix;
-        vector<vector<int> > matrix2;
-        vector<vector<int> > result_matrix;
-        vector<vector<int> > result_matrix2;
-        part2loop(matrix, matrix2, result_matrix, result_matrix2, fout);
-        crosspoint += 1;
-    }
+    // while (crosspoint < 550)
+    // {
+    //     // cout << "Crossover point: " << crosspoint << endl;
+    //     vector<vector<int>> matrix;
+    //     vector<vector<int>> matrix2;
+    //     vector<vector<int>> result_matrix;
+    //     vector<vector<int>> result_matrix2;
+    //     part2loop(matrix, matrix2, result_matrix, result_matrix2, fout);
+    //     crosspoint += 1;
+    // }
     fout.close();
 
     // Part 3: Calculate number of triangles for p = 0.01 through 0.05
@@ -357,6 +409,6 @@ int main(int argc, char *argv[])
     // {
     //     part3loop();
     // }
-    
+
     return 0;
 }
