@@ -286,7 +286,7 @@ int calculate_triangles(vector<vector<int>> &G)
 // part 2 experiment time function
 void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2, 
                vector<vector<int> > &result_matrix, fstream &fout) {
-    for(int i = 1025; i < 2048; i*=2) {
+    for(int i = 2; i < 3; i*=2) {
         pad_matrix(matrix, i);
         pad_matrix(matrix2, i);
         pad_matrix(result_matrix, i);
@@ -296,16 +296,22 @@ void part2loop(vector<vector<int> > &matrix, vector<vector<int> > &matrix2,
 
         // repeat 5 trials for each matrix size
         for (int j = 0; j < 1; j++) {
-            auto start = chrono::high_resolution_clock::now();
+            std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
             matrix_multiply(matrix, matrix2, result_matrix);
-            auto end = chrono::high_resolution_clock::now();
-            auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+            cout << "Brute force: " << endl;
+            print_matrix(result_matrix);
+
+            std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
+            std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
             // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
             fout << crosspoint << "," << i<<"x"<<i<< "," << duration.count();
 
             start = chrono::high_resolution_clock::now();
             strassen_matrix(matrix, matrix2, result_matrix, i);
             prune_matrix(result_matrix, i, i);
+
+            cout << "Strassen's: " << endl;
+            print_matrix(result_matrix);
             end = chrono::high_resolution_clock::now();
             duration = chrono::duration_cast<chrono::milliseconds>(end - start);
             fout << "," << duration.count() << endl;
@@ -331,109 +337,53 @@ int main(int argc, char *argv[])
 {
     srand(static_cast<unsigned>(time(0)));
 
-    crosspoint = 200;
+    crosspoint = 250;
 
-    // import 3 command line arguments
-    if (argc != 4) {
-        // cout << "Please enter 3 command line arguments" << endl;
-        return 0;
-    }
-
-    // 0 for testing, 1 for experiment
-    int mode = atoi(argv[1]);
+    // initialize a matrix of m x n, and another one of n x p
+    int m = 2;
+    int n = 4;
+    int p = 2;
     
-    // dimension of the matrix
-    int dimension = atoi(argv[2]);
-    if (dimension < 1) {
-        // cout << "Please enter a positive integer for the dimension of the matrix" << endl;
-        return 0;
-    }
+    vector<vector<int> > matrix(m, vector<int>(n));
+    vector<vector<int> > matrix2(n, vector<int>(p));
+    vector<vector<int> > result_matrix(m, vector<int>(p));
+
+    // Part 1: Multiply two matrices
+    init_matrix(matrix, m, n);
+    print_matrix(matrix);
+
+    init_matrix(matrix2, n, p);
+    print_matrix(matrix2);
+
+    matrix_multiply(matrix, matrix2, result_matrix);
+    cout << "Brute force: " << endl;
+    print_matrix(result_matrix);
+
+    strassen_matrix(matrix, matrix2, result_matrix, m);
+    prune_matrix(result_matrix, m, p);
+    cout << "Strassen's: " << endl;
+    print_matrix(result_matrix);
+
+        
+    // Part 2: Experimentally determine crossover point
+    // fstream fout;
+    // fout.open("part2-1025-250s.csv", ios::out);
+    // fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
+    // while(crosspoint < 300) {
+    //     // cout << "Crossover point: " << crosspoint << endl;
+    //     vector<vector<int> > matrix;
+    //     vector<vector<int> > matrix2;
+    //     vector<vector<int> > result_matrix;
+    //     part2loop(matrix, matrix2, result_matrix, fout);
+    //     crosspoint += 1;
+    // }
+    // fout.close();
+
+    // Part 3: Calculate number of triangles for p = 0.01 through 0.05
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     part3loop();
+    // }
     
-    // gradescope mode
-    if (mode == 0) 
-    {
-        // test if argv[3] is a file
-        ifstream matrix_file(argv[3]);
-        if (!matrix_file) {
-            // cout << "Please enter a valid file name" << endl;
-            return 0;
-        }
-
-        vector<vector<int> > matrix(dimension, vector<int>(dimension));
-        vector<vector<int> > matrix2(dimension, vector<int>(dimension));
-        vector<vector<int> > result_matrix(dimension, vector<int>(dimension));
-        
-
-        int num;
-        int i = 0;
-        // if i < dimension * dimension, then it's matrix 1, else it's matrix 2
-        while (matrix_file >> num) {
-            // if i is out of bound
-            if (i >= dimension * dimension * 2) {
-                // cout << "Matrix file out of bound." << endl;
-                return 0;
-            }
-
-            int row;
-            int col;
-            if (i < dimension * dimension) {
-                row = i / dimension;
-                col = i % dimension;
-            } 
-            else {
-                row = (i - dimension * dimension) / dimension;
-                col = (i - dimension * dimension) % dimension;
-            }
-
-            // if diagonal, then print
-            if (i < dimension * dimension) {
-                matrix[row][col] = num;
-                // // print c_0 to c_d
-                // if (row == col) {
-                //     cout << num << "\n";
-                // }
-            } 
-            else {
-                matrix2[row][col] = num;
-            }
-            i++;
-        }   
-
-        strassen_matrix(matrix, matrix2, result_matrix, dimension);
-
-        for (int i = 0; i < dimension; i++) {
-            cout << result_matrix[i][i] << endl;
-        }
-        cout << endl;
-        // print_matrix(matrix);
-
-
-        return 0;
-    } 
-
-    // experiment mode
-    else 
-    { 
-        // Part 2: Experimentally determine crossover point
-        fstream fout;
-        fout.open("part2-1025-200s.csv", ios::out);
-        // fout<<"Crossover point"<<","<<"Dimension"<<","<<"Brute Force (milisec)"<<","<<"Strassen's (milisec)"<<endl;
-        while(crosspoint < 250) {
-            // cout << "Crossover point: " << crosspoint << endl;
-            vector<vector<int> > matrix;
-            vector<vector<int> > matrix2;
-            vector<vector<int> > result_matrix;
-            part2loop(matrix, matrix2, result_matrix, fout);
-            crosspoint += 1;
-        }
-        fout.close();
-
-        // Part 3: Calculate number of triangles for p = 0.01 through 0.05
-        // for (int i = 0; i < 5; i++)
-        // {
-        //     part3loop();
-        // }
-        
-        return 0;
-    }
+    return 0;
 }
