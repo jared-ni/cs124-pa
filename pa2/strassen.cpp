@@ -300,11 +300,11 @@ void part2loop(vector<vector<int>> &matrix, vector<vector<int>> &matrix2,
         // repeat 5 trials for each matrix size
         for (int j = 0; j < 1; j++)
         {
-            std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
+            auto start = chrono::high_resolution_clock::now();
             matrix_multiply(matrix, matrix2, result_matrix);
 
-            std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
-            std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+            auto end = chrono::high_resolution_clock::now();
+            auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
             // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
             fout << crosspoint << "," << i << "x" << i << "," << duration.count();
 
@@ -366,6 +366,7 @@ int main(int argc, char *argv[])
 
         vector<vector<int> > matrix(dimension, vector<int>(dimension));
         vector<vector<int> > matrix2(dimension, vector<int>(dimension));
+        vector<vector<int> > result_matrix_brute(dimension, vector<int>(dimension));
         vector<vector<int> > result_matrix(dimension, vector<int>(dimension));
         
 
@@ -412,6 +413,13 @@ int main(int argc, char *argv[])
         cout << endl;
         // print_matrix(matrix);
 
+        // print brute force result
+        // matrix_multiply(matrix, matrix2, result_matrix_brute);
+        // cout << "Brute Force Result:" << endl;
+        // print_matrix(result_matrix_brute);
+        // cout << "Strassen's Result:" << endl;
+        // print_matrix(result_matrix);
+
 
         return 0;
     } 
@@ -452,11 +460,11 @@ int main(int argc, char *argv[])
             // repeat 5 trials for each matrix size
             for (int j = 0; j < 1; j++)
             {
-                std::__1::chrono::steady_clock::time_point start = chrono::high_resolution_clock::now();
+                auto start = chrono::high_resolution_clock::now();
                 matrix_multiply(matrix, matrix2, result_matrix);
 
-                std::__1::chrono::steady_clock::time_point end = chrono::high_resolution_clock::now();
-                std::__1::chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+                auto end = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
                 // cout << "Time taken for " << i << "x" << i << " matrix: " << duration.count() << " miliseconds" << endl;
                 fout << crosspoint << "," << i << "x" << i << "," << duration.count();
 
