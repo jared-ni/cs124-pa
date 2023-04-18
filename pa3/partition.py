@@ -35,7 +35,7 @@ def Karmarkar_Karp(A):
 
             heapq.heappush(S_heap, (new_val, new_val_og, new_index))
     
-    residue = abs(heapq.heappop(S_heap)[0]) if S_heap else 0
+    residue = int(abs(heapq.heappop(S_heap)[0])) if S_heap else 0
 
     # now we process the popped off
     S_res = [0] * len(A)
@@ -53,7 +53,7 @@ def Karmarkar_Karp(A):
             S_res[a[2]] = 1
             S_res[b[2]] = -1
 
-    return S_res, residue
+    return residue
 
 # HIIIII JAREDDDD
 
@@ -109,11 +109,11 @@ def RepeatedRandomPartition(A):
             A_prime[P[j]] += A[j]
 
         # 2) run Karmarkar-Karp on A'
-        residue_prime = Karmarkar_Karp(A_prime)[1]
+        residue_prime = Karmarkar_Karp(A_prime)
 
         if residue_prime < residue:
             residue = residue_prime
-            
+
     return residue
 
 
@@ -127,7 +127,7 @@ def calculate_neighbors(S):
 
 
 # Hill Climbing algorithm for the Partition problem
-def HillClimbing(A, prepartition=False):
+def HillClimbing(A):
     S = [random.choice([-1, 1]) for _ in range(len(A))]
     neighbors = calculate_neighbors(S)
     
@@ -137,10 +137,55 @@ def HillClimbing(A, prepartition=False):
             S = S_prime.copy()
             neighbors = calculate_neighbors(S)
 
-        # if i < 100:
-        #     print("S residue: ", residue(A, S))
-
     return S, residue(A, S)
+
+
+def random_partition_neighbor(P):
+    P_prime = P.copy()
+    # Choose two random indices i and j from [1, n] with pi != j and set pi to j.
+    i = random.randint(0, len(P)-1)
+    j = random.randint(0, len(P)-1)
+    while j == P[i]:
+        j = random.randint(0, len(P)-1)
+    P_prime[i] = j
+    return P_prime
+
+
+
+def calculate_A_prime(P):
+    len_A = len(P)
+    A_prime = [0 for _ in range(len_A)]
+    for j in range(len_A):
+        A_prime[P[j]] += A[j]
+
+    return A_prime
+
+# prepartitioning Hill Climbing algorithm
+def HillClimbingPartition(A):
+    len_A = len(A)
+    residue = Karmarkar_Karp(A)
+    P = None
+
+    for i in range(max_iter):
+        P_prime = (random_partition_neighbor(P) if P 
+                   else [random.randint(0, len_A-1) for _ in range(len_A)])
+        A_prime = calculate_A_prime(P_prime)
+
+        residue_prime = Karmarkar_Karp(A_prime)
+        if residue_prime < residue:
+            P = P_prime.copy()
+            A = A_prime.copy()
+            residue = residue_prime
+        
+        if i < 10:
+            print("i: ", i)
+            print("residue: ", residue)
+            print("New residue: ", Karmarkar_Karp(A_prime))
+            print("P_prime: ", P_prime)
+            print("A_prime: ", A_prime)
+
+    return residue
+
 
 # Simulated Annealing algorithm for the Partition problem
 """
@@ -183,10 +228,10 @@ def SimulatedAnnealing(A):
 if __name__ == "__main__":
     # A = [10, 5, 6, 10, 10, 7]
     # A = [7,1,9,100,6,1,7,1,9,9,5,2]
-    A = [3,1,3,5,0,1,5,6,8,8,7,9, 103, 1, 1, 23, 123]
+    A = [3,1,3,5,0,1,5,6,8,8,7,9,101]
 
     # -10 + 5 + 6 - 10 - 10 - 7 = 
-    print(Karmarkar_Karp(A))
+    # print(Karmarkar_Karp(A))
 
     # print(RepeatedRandom(A))
 
@@ -194,4 +239,6 @@ if __name__ == "__main__":
 
     # print(SimulatedAnnealing(A))
 
-    print(RepeatedRandomPartition(A))
+    # print(RepeatedRandomPartition(A))
+
+    print(HillClimbingPartition(A))
