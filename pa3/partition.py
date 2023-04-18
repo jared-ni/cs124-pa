@@ -35,10 +35,7 @@ def Karmarkar_Karp(A):
 
             heapq.heappush(S_heap, (new_val, new_val_og, new_index))
     
-    residue = abs(heapq.heappop(S_heap)[0])
-
-    print("Pop off: ")
-    print(popped_off)
+    residue = abs(heapq.heappop(S_heap)[0]) if S_heap else 0
 
     # now we process the popped off
     S_res = [0] * len(A)
@@ -78,15 +75,46 @@ def residue(A, S):
     return abs(res)
 
 
+# takes A, generate A'
+def prepartitioning(A):
+    len_A = len(A)
+    partition = [random.randint(0, len_A-1) for _ in range(len_A)]
+    A_prime = [0 for _ in range(len_A)]
+	# combine elements with same value in partition
+    for i in range(len_A):
+        A_prime[partition[i]] += A[i]        
+    return A_prime
+
+
 # Repeated Random algorithm for the Partition problem
 def RepeatedRandom(A):
     S = [random.choice([-1, 1]) for _ in range(len(A))]
-
     for _ in range(max_iter):
         S_prime = [random.choice([-1, 1]) for _ in range(len(S))]
         if residue(A, S) > residue(A, S_prime):
             S = S_prime
     return S, residue(A, S)
+
+
+def RepeatedRandomPartition(A):
+    len_A = len(A)     
+
+    residue = math.inf
+
+    for i in range(max_iter):
+        # generate new random P, then from P generate A'
+        P = [random.randint(0, len_A-1) for _ in range(len_A)]
+        A_prime = [0 for _ in range(len_A)]
+        for j in range(len_A):
+            A_prime[P[j]] += A[j]
+
+        # 2) run Karmarkar-Karp on A'
+        residue_prime = Karmarkar_Karp(A_prime)[1]
+
+        if residue_prime < residue:
+            residue = residue_prime
+            
+    return residue
 
 
 def calculate_neighbors(S):
@@ -99,7 +127,7 @@ def calculate_neighbors(S):
 
 
 # Hill Climbing algorithm for the Partition problem
-def HillClimbing(A):
+def HillClimbing(A, prepartition=False):
     S = [random.choice([-1, 1]) for _ in range(len(A))]
     neighbors = calculate_neighbors(S)
     
@@ -140,7 +168,10 @@ def SimulatedAnnealing(A):
             S = S_prime.copy()
             neighbors = calculate_neighbors(S)
         else:
-            if random.uniform(0.0, 1.0) < math.exp(-(residue(A, S_prime) - residue(A, S)) / T(iter)):
+            prob1 = -(residue(A, S_prime) - residue(A, S))
+            T_iter = T(iter)
+            prob = math.exp(prob1 / T_iter)
+            if random.uniform(0.0, 1.0) < prob:
                 S = S_prime.copy()
                 neighbors = calculate_neighbors(S)
         if residue(A, S) < residue(A, S_prime_2):
@@ -152,13 +183,15 @@ def SimulatedAnnealing(A):
 if __name__ == "__main__":
     # A = [10, 5, 6, 10, 10, 7]
     # A = [7,1,9,100,6,1,7,1,9,9,5,2]
-    A = [3,1,3,5,0,1,5,6,8,8,7,9]
+    A = [3,1,3,5,0,1,5,6,8,8,7,9, 103, 1, 1, 23, 123]
 
     # -10 + 5 + 6 - 10 - 10 - 7 = 
     print(Karmarkar_Karp(A))
 
-    print(RepeatedRandom(A))
+    # print(RepeatedRandom(A))
 
-    print(HillClimbing(A))
+    # print(HillClimbing(A))
 
-    print(SimulatedAnnealing(A))
+    # print(SimulatedAnnealing(A))
+
+    print(RepeatedRandomPartition(A))
