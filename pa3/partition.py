@@ -1,8 +1,12 @@
 import heapq
+import random
+import math
+
+max_iter = 25000
 
 # split into two sets of {+1, -1} labels
-def Karmarkar_Karp(S):
-    S_heap = [(-n, n, i) for i, n in enumerate(S)]
+def Karmarkar_Karp(A):
+    S_heap = [(-n, n, i) for i, n in enumerate(A)]
     # max heapify S
     heapq.heapify(S_heap)
 
@@ -37,7 +41,7 @@ def Karmarkar_Karp(S):
     print(popped_off)
 
     # now we process the popped off
-    S_res = [0] * len(S)
+    S_res = [0] * len(A)
     while popped_off:
         a = popped_off.pop()
         b = popped_off.pop()
@@ -54,9 +58,107 @@ def Karmarkar_Karp(S):
 
     return S_res, residue
 
-
-S = [10, 5, 6, 10, 10, 7]
-print(Karmarkar_Karp(S))
-
 # HIIIII JAREDDDD
 
+
+# repeated random algorithm for the Partition problem
+"""
+    Start with a random solution S
+    for iter = 1 to max iter
+        S′ = a random solution
+        if residue(S′) < residue(S) then S = S′
+    return S
+"""
+
+# residue function 
+def residue(A, S):
+    res = 0
+    for i in range(len(A)):
+        res += A[i] * S[i]
+    return abs(res)
+
+
+# Repeated Random algorithm for the Partition problem
+def RepeatedRandom(A):
+    S = [random.choice([-1, 1]) for _ in range(len(A))]
+
+    for _ in range(max_iter):
+        S_prime = [random.choice([-1, 1]) for _ in range(len(S))]
+        if residue(A, S) > residue(A, S_prime):
+            S = S_prime
+    return S, residue(A, S)
+
+
+def calculate_neighbors(S):
+    neighbors = []
+    for i in range(len(S)):
+        neighbor = S.copy()
+        neighbor[i] = -S[i]
+        neighbors.append(neighbor)
+    return neighbors
+
+
+# Hill Climbing algorithm for the Partition problem
+def HillClimbing(A):
+    S = [random.choice([-1, 1]) for _ in range(len(A))]
+    neighbors = calculate_neighbors(S)
+    
+    for i in range(max_iter):
+        S_prime = random.choice(neighbors)
+        if residue(A, S_prime) < residue(A, S):
+            S = S_prime.copy()
+            neighbors = calculate_neighbors(S)
+
+        # if i < 100:
+        #     print("S residue: ", residue(A, S))
+
+    return S, residue(A, S)
+
+# Simulated Annealing algorithm for the Partition problem
+"""
+Start with a random solution S
+S′′ = S
+for iter = 1 to max iter
+    S′ = a random neighbor of S
+    if residue(S′) < residue(S) then S = S′
+    else S = S′ with probability exp(−(res(S′)-res(S))/T(iter))
+
+    if residue(S) < residue(S′′) then S′′ = SE
+return S′′
+"""
+def SimulatedAnnealing(A):
+    S = [random.choice([-1, 1]) for _ in range(len(A))]
+    S_prime_2 = S
+    neighbors = calculate_neighbors(S)
+
+    def T(iter):
+        return (10**10) * ((0.8)**(iter//300))
+    
+    for iter in range(max_iter):
+        S_prime = random.choice(neighbors)
+        if residue(A, S_prime) < residue(A, S):
+            S = S_prime.copy()
+            neighbors = calculate_neighbors(S)
+        else:
+            if random.uniform(0.0, 1.0) < math.exp(-(residue(A, S_prime) - residue(A, S)) / T(iter)):
+                S = S_prime.copy()
+                neighbors = calculate_neighbors(S)
+        if residue(A, S) < residue(A, S_prime_2):
+            S_prime_2 = S.copy()
+            
+    return S_prime_2, residue(A, S_prime_2)
+
+
+if __name__ == "__main__":
+    # A = [10, 5, 6, 10, 10, 7]
+    # A = [7,1,9,100,6,1,7,1,9,9,5,2]
+    A = [3,1,3,5,0,1,5,6,8,8,7,9]
+
+    # -10 + 5 + 6 - 10 - 10 - 7 = 
+    print(Karmarkar_Karp(A))
+
+    print(RepeatedRandom(A))
+
+    print(HillClimbing(A))
+
+    print(SimulatedAnnealing(A))
