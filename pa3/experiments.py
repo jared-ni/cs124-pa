@@ -1,7 +1,6 @@
 import heapq
 import random
 import math
-import sys
 
 max_iter = 25000
 
@@ -237,45 +236,37 @@ def SimulatedAnnealingPartition(A):
     return residue_prime_2
 
 
-if __name__ == "__main__":
-    # flag Algorithm inputFile
-    if len(sys.argv) != 4:
-        print("Usage: python3 partition.py [flag] [Algorithm] [inputFile]")
-        exit(1)
-
-    flag = sys.argv[1]
-    algorithm = sys.argv[2]
-    inputFile = sys.argv[3]
-
-    # read input file
-    # every line is an integer in the set A
-    A = []
-    with open(inputFile, 'r') as f:
-        A = [int(line.rstrip()) for line in f]
-
-    # run algorithm
-    if algorithm == "0":
-        print(Karmarkar_Karp(A))
-    elif algorithm == "1":
-        print(RepeatedRandom(A))
-    elif algorithm == "2":
-        print(HillClimbing(A))
-    elif algorithm == "3":
-        print(SimulatedAnnealing(A))
-    elif algorithm == "11":
-        print(RepeatedRandomPartition(A))
-    elif algorithm == "12":
-        print(HillClimbingPartition(A))
-    elif algorithm == "13":
-        print(SimulatedAnnealingPartition(A))
+# generate set of 100 random integers, from range [1, 10^12]
+def generate_set(min, max, n):
+    set = []
+    for _ in range(n):
+        set.append(random.randint(min, max))
+    return set
 
 
-"""
-0  Karmarkar-Karp 
-1  repeated Random
-2  Hill Climbing
-3  Simulated Annealing
-11 Prepartitioned Repeated Random
-12 Prepartitioned Hill Climbing
-13 Prepartitioned Simulated Annealing
-"""
+kk = open("kk.txt", "w")
+rr = open("rr.txt", "w")
+hc = open("hc.txt", "w")
+sa = open("sa.txt", "w")
+rrp = open("rrp.txt", "w")
+hcp = open("hcp.txt", "w")
+sap = open("sap.txt", "w")
+
+
+# generate 50 random instances of the problem and run each algorithm
+for _ in range(50):
+    A = generate_set(1, 10 ** 12, 100)
+    with open("kk.txt", "a") as kk:
+        kk.write(str(Karmarkar_Karp(A)) + "\n")
+    with open("rr.txt", "a") as rr:
+        rr.write(str(RepeatedRandom(A)) + "\n")
+    with open("hc.txt", "a") as hc:
+        hc.write(str(HillClimbing(A)) + "\n")
+    with open("sa.txt", "a") as sa:
+        sa.write(str(SimulatedAnnealing(A)) + "\n")
+    with open("rrp.txt", "a") as rrp:
+        rrp.write(str(RepeatedRandomPartition(A)) + "\n")
+    with open("hcp.txt", "a") as hcp:
+        hcp.write(str(HillClimbingPartition(A)) + "\n")
+    with open("sap.txt", "a") as sap:
+        sap.write(str(SimulatedAnnealingPartition(A)) + "\n")
