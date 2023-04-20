@@ -1,6 +1,7 @@
 import heapq
 import random
 import math
+import time
 
 max_iter = 25000
 
@@ -251,22 +252,63 @@ sa = open("sa.txt", "w")
 rrp = open("rrp.txt", "w")
 hcp = open("hcp.txt", "w")
 sap = open("sap.txt", "w")
-
+kk_time = open("kk_time.txt", "w")
+rr_time = open("rr_time.txt", "w")
+hc_time = open("hc_time.txt", "w")
+sa_time = open("sa_time.txt", "w")
+rrp_time = open("rrp_time.txt", "w")
+hcp_time = open("hcp_time.txt", "w")
+sap_time = open("sap_time.txt", "w")
 
 # generate 50 random instances of the problem and run each algorithm
 for _ in range(50):
     A = generate_set(1, 10 ** 12, 100)
+
     with open("kk.txt", "a") as kk:
+        start = time.time()
         kk.write(str(Karmarkar_Karp(A)) + "\n")
+        end = time.time()
+        with open("kk_time.txt", "a") as kk_time:
+            kk_time.write(str(end - start) + "\n")
+
     with open("rr.txt", "a") as rr:
+        start = time.time()
         rr.write(str(RepeatedRandom(A)) + "\n")
+        end = time.time()
+        with open("rr_time.txt", "a") as rr_time:
+            rr_time.write(str(end - start) + "\n")
+
     with open("hc.txt", "a") as hc:
+        start = time.time()
         hc.write(str(HillClimbing(A)) + "\n")
+        end = time.time()
+        with open("hc_time.txt", "a") as hc_time:
+            hc_time.write(str(end - start) + "\n")
+
     with open("sa.txt", "a") as sa:
+        start = time.time()
         sa.write(str(SimulatedAnnealing(A)) + "\n")
+        end = time.time()
+        with open("sa_time.txt", "a") as sa_time:
+            sa_time.write(str(end - start) + "\n")
+
     with open("rrp.txt", "a") as rrp:
+        start = time.time()
         rrp.write(str(RepeatedRandomPartition(A)) + "\n")
+        end = time.time()
+        with open("rrp_time.txt", "a") as rrp_time:
+            rrp_time.write(str(end - start) + "\n")
+
     with open("hcp.txt", "a") as hcp:
+        start = time.time()
         hcp.write(str(HillClimbingPartition(A)) + "\n")
+        end = time.time()
+        with open("hcp_time.txt", "a") as hcp_time:
+            hcp_time.write(str(end - start) + "\n")
+
     with open("sap.txt", "a") as sap:
+        start = time.time()
         sap.write(str(SimulatedAnnealingPartition(A)) + "\n")
+        end = time.time()
+        with open("sap_time.txt", "a") as sap_time:
+            sap_time.write(str(end - start) + "\n")
